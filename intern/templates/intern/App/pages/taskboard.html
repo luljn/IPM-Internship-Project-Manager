@@ -1,0 +1,192 @@
+{% load static %}
+
+<!doctype html>
+<html class="no-js" lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>IPM - My Taskboard</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- <link rel="icon" href="../favicon.ico" type="image/x-icon" /> -->
+
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+        
+        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/@fortawesome/fontawesome-free/css/all.min.css' %}">
+        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/ionicons/dist/css/ionicons.min.css' %}">
+        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/icon-kit/dist/css/iconkit.min.css' %}">
+        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/perfect-scrollbar/css/perfect-scrollbar.css' %}">
+        <link rel="stylesheet" href="{% static 'intern/Decor/dist/css/theme.min.css' %}">
+        <script src="{% static 'intern/Decor/src/js/vendor/modernizr-2.8.3.min.js' %}"></script>
+    </head>
+
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="wrapper">
+            <header class="header-top" header-theme="dark">
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between">
+                        <div class="top-menu d-flex align-items-center">
+                            <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
+                            <div class="header-search">
+                                <div class="input-group">
+                                    <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
+                                    <input type="text" class="form-control">
+                                    <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>
+                                </div>
+                            </div>
+                            <button type="button" id="navbar-fullscreen" class="nav-link"><i class="ik ik-maximize"></i></button>
+                        </div>
+                        <div class="top-menu d-flex align-items-center">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="../img/user.jpg" alt=""></a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="{% url 'profile' %}"><i class="ik ik-user dropdown-icon"></i> Mon Profil</a>
+                                    <a class="dropdown-item" href="{% url 'logout' %}"><i class="ik ik-power dropdown-icon"></i> Se déconnecter</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-wrap">
+                <div class="app-sidebar colored">
+                    <div class="sidebar-header">
+                        <a class="header-brand" href="index.html">
+                            <div class="logo-img">
+                               <img src="" class="header-brand-img" alt=""> 
+                            </div>
+                            <span class="text">IPM</span>
+                        </a>
+                        <button type="button" class="nav-toggle"><i data-toggle="expanded" class="ik ik-toggle-right toggle-icon"></i></button>
+                        <button id="sidebarClose" class="nav-close"><i class="ik ik-x"></i></button>
+                    </div>
+                    
+                    <div class="sidebar-content">
+                        <div class="nav-container">
+                            <nav id="main-menu-navigation" class="navigation-main">
+                                <div class="nav-lavel">Navigation</div>
+                                <div class="nav-item">
+                                    <a href="{% url 'home' %}"><i class="ik ik-home"></i><span>Accueil</span></a>
+                                </div>
+                                <div class="nav-item">
+                                    <a href="{% url 'project' %}"><i class="ik ik-menu"></i><span>Mon Projet</span></a>
+                                </div>
+                                <div class="nav-item active">
+                                    <a href="{% url 'tasklist' %}"><i class="ik ik-layers"></i><span>Mes tâches</span></a>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-content">
+                    <div class="container-fluid">
+                        <div class="page-header">
+                            <div class="row align-items-end">
+                                <div class="col-lg-8">
+                                    <div class="page-header-title">
+                                        <i class="ik ik-layers bg-blue"></i>
+                                        <div class="d-inline">
+                                            <h5>Mon Taskboard</h5>
+                                            <span>Voici la liste de vos tâches</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <table id="advanced_table" class="table">
+                                <thead>
+                                    <tr>
+                                        <!-- <th class="nosort" width="10">
+                                            <label class="custom-control custom-checkbox m-0">
+                                                <input type="checkbox" class="custom-control-input" id="selectall" name="" value="option2">
+                                                <span class="custom-control-label">&nbsp;</span>
+                                            </label>
+                                        </th> -->
+                                        <th>Nom</th>
+                                        <th>Description</th>
+                                        <th>Etat</th>
+                                        <th>Debut</th>
+                                        <th>Fin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <!-- <td>
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input select_all_child" id="" name="" value="option2">
+                                                <span class="custom-control-label">&nbsp;</span>
+                                            </label>
+                                        </td> -->
+                                        <td><a href="{% url 'task_detailled' %}">Implementation Python</a></td>
+                                        <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis voluptas, iste dolorem sint mollitia vel numquam itaque consequatur quos. Modi laboriosam quos nam dolor expedita accusantium doloremque illo dolore a.</td>
+                                        <td>En cours</td>
+                                        <td>2023/05/26</td>
+                                        <td>2023/05/22</td>
+                                        <td><button>supprimer</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <footer class="footer">
+                    <div class="w-100 clearfix">
+                        <span class="text-center text-sm-left d-md-inline-block">Copyright © 2023 ICCSOFT SA - Internship Project Manager All Rights Reserved.</span>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+
+        <div class="modal fade apps-modal" id="appsModal" tabindex="-1" role="dialog" aria-labelledby="appsModalLabel" aria-hidden="true" data-backdrop="false">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ik ik-x-circle"></i></button>
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="quick-search">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4 ml-auto mr-auto">
+                                    <div class="input-wrap">
+                                        <input type="text" id="quick-search" class="form-control" placeholder="Search..." />
+                                        <i class="ik ik-search"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../src/js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+        <script src="{% static 'intern/Decor/node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+        <script src="{% static 'intern/Decor/node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'intern/Decor/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js' %}"></script>
+        <script src="{% static 'intern/Decor/node_modules/screenfull/dist/screenfull.js' %}"></script>
+        <script src="{% static 'intern/Decor/node_modules/nestable/jquery.nestable.js' %}"></script>
+        <script src="{% static 'intern/Decor/dist/js/theme.min.js' %}"></script>
+        <script src="{% static 'intern/Decor/js/taskboard.js' %}"></script>
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='https://www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script>
+    </body>
+</html>
