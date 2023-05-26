@@ -15,9 +15,9 @@ class User(AbstractUser) :
         (INTERN, 'Stagiaire'),
     )
 
-    user_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant utilisateur')
+    #user_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant utilisateur')
     role = models.CharField(max_length=30, choices=ROLES_CHOICES, verbose_name='role de l\'utilisateur')
-    photo = models.ImageField(verbose_name='photo de profil')
+    photo = models.ImageField(null=True, verbose_name='photo de profil')
     
     
     
@@ -48,12 +48,12 @@ class Intership(models.Model) :
         (ANNULE, 'Annule'),
     )
     
-    intership_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant stage')
+    #intership_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant stage')
     duration = models.DurationField(null=True, verbose_name="durée du stage")
     start_date = models.DateField(verbose_name="date de début")
     end_date = models.DateField(verbose_name="date de fin")
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="statut")
-    user = models.ForeignKey(Intern, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     
     
@@ -71,7 +71,7 @@ class Project(models.Model) :
         (ANNULE, 'Annule'),
     )
     
-    project_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant projet')
+    #project_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant projet')
     title = models.CharField(max_length=500, verbose_name="titre")
     description = models.CharField(max_length=5500, verbose_name="description")
     duration = models.DurationField(null=True, verbose_name="durée du stage")
@@ -96,7 +96,7 @@ class Task(models.Model) :
         (ANNULE, 'Annule'),
     )
     
-    task_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant tâche')
+    #task_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant tâche')
     title = models.CharField(max_length=500, verbose_name="titre")
     duration = models.DurationField(null=True, verbose_name="durée du stage")
     description = models.CharField(max_length=5500, verbose_name="description")
@@ -121,7 +121,7 @@ class Phase(models.Model) :
         (ANNULE, 'Annule'),
     )
     
-    phase_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant phase')
+    #phase_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant phase')
     title = models.CharField(max_length=500, verbose_name="titre")
     description = models.CharField(max_length=5500, verbose_name="description")
     duration = models.DurationField(null=True, verbose_name="durée du stage")
@@ -134,7 +134,7 @@ class Phase(models.Model) :
     
 class Document(models.Model) :
     
-    document_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant document')
+    #document_id = models.IntegerField(primary_key=True, auto_created=True, db_column='id', verbose_name='identifiant document')
     title = models.CharField(max_length=500, verbose_name="titre")
     description = models.CharField(max_length=5500, verbose_name="description")
     is_public = models.BooleanField(default=False, verbose_name="Autorisation de partage")
