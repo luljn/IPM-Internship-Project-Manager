@@ -93,9 +93,10 @@
                                 <div class="col-lg-8">
                                     <div class="page-header-title">
                                         <i class="ik ik-file-text bg-blue"></i>
+                                        {% if user.is_authenticated %}
                                         <div class="d-inline">
                                             <h5>Mon Profil</h5>
-                                            <span>Stagiaire chez ICCSOFT SA</span>
+                                            <span>{{ user.role}} chez ICCSOFT SA</span>
                                         </div>
                                     </div>
                                 </div>
@@ -108,8 +109,9 @@
                                     <div class="card-body">
                                         <div class="text-center"> 
                                             <img src="../img/user.jpg" class="rounded-circle" width="150" />
-                                            <h4 class="card-title mt-10">John_Doe</h4>
-                                            <p class="card-subtitle">Stagiaire</p>
+                                            <h4 class="card-title mt-10">{{ user.username }}</h4>
+                                            <p class="card-subtitle">{{ user.role }}</p>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <hr class="mb-0"> 
@@ -140,18 +142,24 @@
                                         <div class="tab-pane fade show active" id="last-month" role="tabpanel" aria-labelledby="pills-profile-tab">
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-md-3 col-6"> <strong>Full Name</strong>
+                                                    {% if user.is_authenticated %}
+                                                    <div class="col-md-3 col-6"> <strong>Nom</strong>
                                                         <br>
-                                                        <p class="text-muted">Johnathan Doe</p>
+                                                        <p class="text-muted">{{ user.last_name }}</p>
+                                                    </div>
+                                                    <div class="col-md-3 col-6"> <strong>Prénom</strong>
+                                                        <br>
+                                                        <p class="text-muted">{{ user.first_name }}</p>
                                                     </div>
                                                     <div class="col-md-3 col-6"> <strong>Email</strong>
                                                         <br>
-                                                        <p class="text-muted">johnathan@admin.com</p>
+                                                        <p class="text-muted">{{ user.email }}</p>
                                                     </div>
-                                                    <div class="col-md-3 col-6"> <strong>Role</strong>
+                                                    <div class="col-md-3 col-6"> <strong>Rôle</strong>
                                                         <br>
-                                                        <p class="text-muted">Stagiaire</p>
+                                                        <p class="text-muted">{{ user.role }}</p>
                                                     </div>
+                                                    {% endif %}
                                                 </div>
                                                 <hr>
                                                 <p class="mt-30">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
@@ -161,7 +169,7 @@
                                         </div>
                                         <div class="tab-pane fade" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
                                             <div class="card-body">
-                                                <form class="form-horizontal">
+                                                <form class="form-horizontal" method="post">
                                                     <div class="form-group">
                                                         <label for="example-name">Nom</label>
                                                         <input type="text" placeholder="Doe" class="form-control" name="example-name" id="example-name">

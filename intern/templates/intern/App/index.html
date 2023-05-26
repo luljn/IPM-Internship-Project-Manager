@@ -103,8 +103,10 @@
                                     <div class="page-header-title">
                                         <i class="ik ik-home bg-blue"></i>
                                         <div class="d-inline">
+                                            {% if user.is_authenticated %}
                                             <h5>BIENVENUE</h5>
-                                            <span>John_Doe</span>
+                                            <span>{{ user.username }}</span>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>

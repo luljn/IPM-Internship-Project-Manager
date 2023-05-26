@@ -112,11 +112,13 @@
                                                 <span class="custom-control-label">&nbsp;</span>
                                             </label>
                                         </th> -->
-                                        <th>Nom</th>
+                                        <th>#</th>
+                                        <th>Titre</th>
                                         <th>Description</th>
                                         <th>Etat</th>
-                                        <th>Debut</th>
+                                        <th>Début</th>
                                         <th>Fin</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -127,6 +129,7 @@
                                                 <span class="custom-control-label">&nbsp;</span>
                                             </label>
                                         </td> -->
+                                        <td>1</td>
                                         <td><a href="{% url 'task_detailled' %}">Implementation Python</a></td>
                                         <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis voluptas, iste dolorem sint mollitia vel numquam itaque consequatur quos. Modi laboriosam quos nam dolor expedita accusantium doloremque illo dolore a.</td>
                                         <td>En cours</td>
@@ -137,6 +140,8 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <a href="{% url 'add_task' %}"><button class="btn btn-primary mr-2">Ajouter une tâche</button></a>
 
                     </div>
                 </div>

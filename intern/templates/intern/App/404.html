@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="utf-8">
     <title>Page Not Found</title>
@@ -45,7 +45,7 @@
         }
         h4 {
             color: #4a5361;
-            text-transform: capitalize;
+            {% comment %} text-transform: capitalize; {% endcomment %}
             font-size: 28px;
         }
 
@@ -85,9 +85,9 @@
 </head>
 <body>  
     <h1>404</h1>
-    <h4>Page Not Found</h4>
+    <h4>La page n'a pas été trouvée.</h4>
     <p>La page que vous recherchez n'existe pas.</p>
-    <a href="../Login.html">Page de connexion</a>
+    <a href="{% url 'login' %}">Page de connexion</a>
 </body>
 </html>
 <!-- IE needs 512+ bytes: http://blogs.msdn.com/b/ieinternals/archive/2010/08/19/http-error-pages-in-internet-explorer.aspx -->
