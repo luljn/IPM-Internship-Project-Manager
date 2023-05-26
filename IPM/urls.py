@@ -41,4 +41,4 @@ urlpatterns = [
     path('profile/', intern.views.ProfilView.as_view(), name='profile'),
 ]
 
-# handler404 = 'intern.views.error404'
+handler404 = 'intern.views.error404'
