@@ -15,8 +15,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path
+
+import intern.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # page de connexion.
+    path('', intern.views.CustomLoginView.as_view(), name='login'),  
+    # page de deconnexion.                                            
+    path('logout/', LogoutView.as_view(), name='logout'),  
+    # page d'accueil.       
+    path('home/', intern.views.home, name='home'),   
+    # page du projet.            
+    path('project/', intern.views.project, name='project'),  
+    # page des taches.                       
+    path('tasklist/', intern.views.tasklist, name='tasklist'),
+    # page detaillee de chaque tache.
+    # path('tasklist/<int:task_id>', intern.views.DetailledTaskView.as_view()),
+    path('tasklist/1', intern.views.DetailledTaskView.as_view(), name='task_detailled'),
+    # page detaillee de chaque tache.
+    path('add_task/', intern.views.AddTaskView.as_view(), name='add_task'),
+    # page du profil.                     
+    path('profile/', intern.views.ProfilView.as_view(), name='profile'),
 ]
+
+handler404 = 'intern.views.error404'
