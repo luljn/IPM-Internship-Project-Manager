@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from django.core.mail import send_mail
 
 # Create your models here.
 
@@ -41,19 +42,36 @@ def save_user_profile(sender, instance, **kwargs) :
     
         instance.member.save()
         
+        
     except Member.DoesNotExist : 
         
         pass
     
-@receiver(post_delete, sender=User)
-def delete_user_profile(sender, instance, **kwargs) :
+# @receiver(post_delete, sender=User)
+# def delete_user_profile(sender, instance, **kwargs) :
     
-    try : 
+#     try : 
         
-        member = instance.member
-        member.delete()
+#         member = instance.member
+#         member.delete()
         
-    except Member.DoesNotExist :
+#     except Member.DoesNotExist :
         
-        pass
+#         pass
+    
+@receiver(post_save, sender=User)
+def send_welcome_email(sender, instance, created, **kwargs) :
+    
+    if created :
+        
+        subject = 'Bienvenue chez ICCSOFT pour votre stage.'
+        message = 'Vous avez été inscrit sur IPM(Intership Project Manager), l\'application web utilisé pour gérer'
+        message += '\n les projets de stage chez ICCSOFT. Vos identfiants de connexion sont : '
+        message += f'\n Nom d\'utisateur : {instance.username} \n Mot de passe : S3cret1234! '
+        message += '\n l\'application est disponible sur : 127.0.0.0.1:8000 '
+        message += 'Vous pouvez changez vos informations personnelles sur la page correspondant à votre profil.'
+        message += '\n Nous vous souhaitons une bonne période de stage.'
+        from_email = 'mbohlulajonathan4@gmail.com' 
+        recipient_list = [instance.email]
+        send_mail(subject, message, from_email, recipient_list)
     

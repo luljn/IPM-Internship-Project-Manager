@@ -159,7 +159,7 @@
                                                         <br>
                                                         <p class="text-muted">{{ user.member.role }}</p>
                                                     </div>
-                                                    {% endif %}
+                                                    {% comment %} {% endif %} {% endcomment %}
                                                 </div>
                                                 <hr>
                                                 <p class="mt-30">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
@@ -172,32 +172,33 @@
                                                 <form class="form-horizontal" method="post">
                                                     <div class="form-group">
                                                         <label for="example-name">Nom</label>
-                                                        <input type="text" placeholder="Doe" class="form-control" name="example-name" id="example-name">
+                                                        <input type="text" placeholder="{{ user.last_name }}" class="form-control" name="example-name" id="example-name">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="example-name">Prénom</label>
-                                                        <input type="text" placeholder="Johnathan" class="form-control" name="example-name" id="example-name">
+                                                        <input type="text" placeholder="{{ user.first_name }}" class="form-control" name="example-name" id="example-name">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="example-name">Nom d'utilisateur</label>
-                                                        <input type="text" placeholder="user123" class="form-control" name="example-name" id="example-name">
+                                                        <input type="text" placeholder="{{ user.username }}" class="form-control" name="example-name" id="example-name">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="example-email">Email</label>
-                                                        <input type="email" placeholder="johnathan@admin.com" class="form-control" name="example-email" id="example-email">
+                                                        <input type="email" placeholder="{{ user.email }}" class="form-control" name="example-email" id="example-email">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="example-password">Password</label>
-                                                        <input type="password" value="password" class="form-control" name="example-password" id="example-password">
+                                                        <input type="password" value="" class="form-control" name="example-password" id="example-password">
                                                     </div>
-                                                    <div class="form-group">
+                                                    {% comment %} <div class="form-group">
                                                         <label for="example-message">Message</label>
                                                         <textarea name="example-message" name="example-message" rows="5" class="form-control"></textarea>
-                                                    </div>
+                                                    </div> {% endcomment %}
                                                     <button class="btn btn-success" type="submit">Enregistrer</button>
                                                 </form>
                                             </div>
                                         </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
