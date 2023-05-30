@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.mail import send_mail
 
@@ -20,13 +20,13 @@ class Member(models.Model) :
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=30, choices=ROLES_CHOICES, verbose_name='role de l\'utilisateur')
-    photo = models.ImageField(null=True, verbose_name='photo de profil')
+    photo = models.ImageField(default='', null=True, verbose_name='photo de profil')
     
     
     
     def __str__(self) :
         
-        return self.user.username
+        return f'{self.user.username} : {self.role}'
     
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs) :
@@ -59,7 +59,7 @@ def save_user_profile(sender, instance, **kwargs) :
         
 #         pass
     
-@receiver(post_save, sender=User)
+# @receiver(post_save, sender=User)
 def send_welcome_email(sender, instance, created, **kwargs) :
     
     if created :
