@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.core.mail import send_mail
+
 
 # Create your models here.
 
@@ -107,20 +107,6 @@ def save_user_profile(sender, instance, **kwargs) :
 #         pass
     
 # @receiver(post_save, sender=User)
-def send_welcome_email(sender, instance, created, **kwargs) :
-    
-    if created :
-        
-        subject = 'Bienvenue chez ICCSOFT pour votre stage.'
-        message = 'Vous avez été inscrit sur IPM(Intership Project Manager), l\'application web utilisé pour gérer'
-        message += '\n les projets de stage chez ICCSOFT. Vos identfiants de connexion sont : '
-        message += f'\n Nom d\'utisateur : {instance.username} \n Mot de passe : S3cret1234! '
-        message += '\n l\'application est disponible sur : http://127.0.0.0.1:8000/ '
-        message += 'Vous pouvez changez vos informations personnelles sur la page correspondant à votre profil.'
-        message += '\n Nous vous souhaitons une bonne période de stage.'
-        from_email = 'mbohlulajonathan4@gmail.com' 
-        recipient_list = [instance.email]
-        send_mail(subject, message, from_email, recipient_list)
         
         
         
@@ -141,7 +127,7 @@ class Intership(models.Model) :
     duration = models.IntegerField(null=True, verbose_name="durée du stage(en semaines)")
     start_date = models.DateField(verbose_name="date de début")
     end_date = models.DateField(verbose_name="date de fin")
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="statut")
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="etat")
     intern = models.ForeignKey(Intern, on_delete=models.CASCADE)
     
     class Meta :
@@ -174,7 +160,7 @@ class Project(models.Model) :
     duration = models.IntegerField(null=True, verbose_name="durée du projet(en semaines)")
     start_date = models.DateField(verbose_name="date de début")
     end_date = models.DateField(verbose_name="date de fin")
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="statut")
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="etat")
     internship = models.ForeignKey(Intership, on_delete=models.CASCADE)
     
     class Meta :
@@ -207,7 +193,7 @@ class Task(models.Model) :
     description = models.CharField(max_length=5500, verbose_name="description")
     start_date = models.DateField(verbose_name="date de début")
     end_date = models.DateField(verbose_name="date de fin")
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="statut")
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="etat")
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     
     class Meta :
@@ -240,7 +226,7 @@ class Phase(models.Model) :
     duration = models.IntegerField(null=True, verbose_name="durée de la phase(en jours)")
     start_date = models.DateField(verbose_name="date de début")
     end_date = models.DateField(verbose_name="date de fin")
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="statut")
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="etat")
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     
     class Meta :

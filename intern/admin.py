@@ -17,33 +17,23 @@ class MemberInline(admin.StackedInline) :
     
 class UserAdmin(BaseUserAdmin) :
     
-    # form = UserProfileForm
-    # add_form = UserProfileForm
+    change_form_template = "admin/auth/user/custom_changeform.html"
 
-    # fieldsets = (
-    #     (None, {'fields': ('username', 'email', 'password', 'first_name', 'last_name')}),
-    #     ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-    #     ('Important dates', {'fields': ('last_login', 'date_joined')}),
-    # )
 
-    # add_fieldsets = (
-    #     (None, {
-    #         'classes': ('wide',),
-    #         'fields': ('username', 'email', 'password1', 'password2'),
-    #     }),
-    # )
+    def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
+        if 'object_id' in request.resolver_match.kwargs:
+            rq = request.resolver_match.kwargs['object_id']
+            user_obj = User.objects.get(pk=rq)
+            context.update({
+                'user':user_obj,
+            })
 
-    # list_display = ('username', 'email', 'is_staff')
-    # list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
-    # search_fields = ('username', 'email')
-    # ordering = ('username',)
-    
-    inlines = [MemberInline]
+        return super().render_change_form(request, context, add, change, form_url, obj)
     
     
     
-# admin.site.unregister(User)
-# admin.site.register(User, UserAdmin)
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 # admin.site.register(Member)
 admin.site.register(Intern)
 admin.site.register(Tutor)

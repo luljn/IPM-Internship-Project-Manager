@@ -2,9 +2,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.views.generic import View
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from .models import *
+from .forms import *
 
 # Create your views here.
 
@@ -74,30 +79,54 @@ class ProfilView(LoginRequiredMixin ,View) :
 
 
 
-class DetailledTaskView(LoginRequiredMixin ,View) :
+class DetailledTaskView(LoginRequiredMixin, UpdateView) :
 
     template_name = 'intern/App/pages/task_detailled.html'
-
-    def get(self, request, task_id) :
-        
-        Tasks = Task.objects.get(id=task_id)
-
-        return render(request, self.template_name, {'Tasks' : Tasks})
-    
-    def post(self, request) : 
-
-        pass
+    model = Task
+    form_class = UpdateTaskForm
+    success_url = reverse_lazy('tasklist')
     
     
     
-class AddTaskView(LoginRequiredMixin ,View) :
+class AddTaskView(LoginRequiredMixin, CreateView) :
 
     template_name = 'intern/App/pages/task_add.html'
-
-    def get(self, request) :
-
-        return render(request, self.template_name)
+    model = Task
+    form_class = AddTaskForm
+    success_url = reverse_lazy('tasklist')
     
-    def post(self, request) : 
+    
+    
+class DeleteTask(LoginRequiredMixin, DeleteView) :
+    
+    template_name = 'intern/App/pages/task_delete.html'
+    model = Task
+    success_url = reverse_lazy('tasklist')
+    
+    
+    
+def send_welcome_email(request):
+    from django.contrib import messages
 
-        pass
+    user_id = request.GET.get('user_id', '')
+    user = User.objects.get(pk=user_id)
+
+    if user:
+        
+        subject = 'Bienvenue chez ICCSOFT pour votre stage.'
+        message = 'Vous avez été inscrit sur IPM(Intership Project Manager), l\'application web utilisé pour gérer'
+        message += '\n les projets de stage chez ICCSOFT. Vos identfiants de connexion sont : '
+        message += f'\n Nom d\'utisateur : {user.username} \n Mot de passe : S3cret1234! '
+        message += '\n l\'application est disponible sur : localhost:8000/ '
+        message += 'Vous pouvez changez vos informations personnelles sur la page correspondant à votre profil.'
+        message += '\n Nous vous souhaitons une bonne période de stage.'
+        from_email = 'mbohlulajonathan4@gmail.com' 
+        recipient_list = [user.email]
+        send_mail(subject, message, from_email, recipient_list)
+        messages.success(request, 'Un email avec un lien de connexion a été envoyé à {}.'.format(user.email))
+
+        try:
+            obj = User.objects.get(pk=user.pk)
+            return redirect(obj)
+        except:
+            return redirect('/admin')

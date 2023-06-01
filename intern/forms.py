@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import Member
+from .models import *
 
 
 
@@ -44,4 +44,22 @@ def save_user_email(sender, instance, created, **kwargs) :
         user = User.objects.get(username=instance.username)
         user.email = instance.email
         user.save()
+        
+        
+       
+class UpdateTaskForm(forms.ModelForm) :
+    
+    class Meta :
+        
+        model = Task
+        fields = ['title', 'description', 'start_date', 'end_date', 'status']
+        
+        
+        
+class AddTaskForm(forms.ModelForm) :
+    
+    class Meta :
+        
+        model = Task
+        fields = ['title', 'description', 'start_date', 'end_date', 'status', 'project']
     

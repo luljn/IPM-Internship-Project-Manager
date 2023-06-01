@@ -94,8 +94,8 @@
                                     <div class="page-header-title">
                                         <i class="ik ik-server bg-blue"></i>
                                         <div class="d-inline">
-                                            <h5>Tâche</h5>
-                                            <span>{{ Tasks.title }}</span>
+                                            <h5>Modification de tâche</h5>
+                                            <span></span>
                                         </div>
                                     </div>
                                 </div>
@@ -104,39 +104,61 @@
 
                         <div class="col-md-6">
                                 <div class="card">
-                                    <div class="card-header"><h3>Modifier la tâche</h3></div>
+                                    <div class="card-header"><h3 class='title'>Modifier la tâche</h3></div>
                                     <div class="card-body">
-                                        <form class="forms-sample">
-                                            <div class="form-group">
-                                                <label for="exampleInputUsername1">Titre</label>
-                                                <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Titre">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Description</label>
-                                                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Description">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputPassword1">Etat</label>
-                                                {% comment %} <input type="" class="form-control" id="exampleInputPassword1" placeholder="Password"> {% endcomment %}
-                                                {% comment %} <label class="form-group" for="ma_choicelist">Ma choicelist :</label> {% endcomment %}
-                                                    <select id="ma_choicelist" name="ma_choicelist">
-                                                        <option value="option1">En attente</option>
-                                                        <option value="option2">En cours</option>
-                                                        <option value="option3">Terminée</option>
-                                                        <option value="option4">Annulée</option>
-                                                    </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="debut">Date de début</label>
-                                                <input type="date" name="debut" id="name" placeholder="début">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="fin">Date de fin</label>
-                                                <input type="date" name="fin" id="name" placeholder="fin">
-                                            </div>
+                                        <form class="forms-sample" method='post'>
+                                            {% csrf_token %}
+                                            {% for field in form %}
+                                                <div class="form-group">
+                                                {{ field.label_tag }}
+                                                {{ field }}
+                                                </div>
+                                            {% endfor %}
+                                            {% if error %}
+                                                <p class = 'error'>{{ error }}</p>
+                                            {% endif %}
                                             <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
-                                            <button class="btn btn-light">Supprimer</button>
                                         </form>
+                                        <a href="{% url 'delete_task' object.id %}"><button class='btn-supp'>Supprimer</button></a> 
+                                            <style>
+                                                .title{
+                                                    text-align: center;
+                                                    font-size : 30px;
+                                                }
+
+                                                .btn-supp{
+                                                    background-color: #4CAF50;
+                                                    color: white;
+                                                    width: 95px;
+                                                    font-size: 14px;
+                                                    text-align: center;
+                                                    border: none;
+                                                    padding: 5px;
+                                                    border-radius: 3px;
+                                                    margin-top: 10px;
+                                                }
+                                                .btn-supp:active{
+                                                    opacity: 0.5;
+                                                }
+                                                label {
+                                                    display: inline;
+                                                    width: 100px;
+                                                    margin-top: 5px;
+                                                    font-size: 15px;
+                                                    font-weight: bold;
+                                                }
+                                                  
+                                                input[type="text"],
+                                                textarea 
+                                                {
+                                                    padding: 5px;
+                                                    border: 1px solid #ccc;
+                                                    border-radius: 3px;
+                                                    width: 300px;
+                                                    margin-top: 5px;
+                                                    font-size: 14px;
+                                                }
+                                            </style>
                                     </div>
                                 </div>
                         </div>

@@ -1,0 +1,16 @@
+{% extends 'admin/change_form.html' %}
+
+{% block content %}
+        {% if request.user.is_superuser and object_id %}
+            <form action="{% url 'send_email' %}">
+                <input type="hidden" value="{{ user.pk }}" name="user_id" readonly>
+                
+                <div class="module aligned">
+                    <button type="submit" class="button m-2" style="padding: 10px;">Envoyer le mail de connexion</button>
+                </div>
+            </form>
+        {% endif %}
+
+    {{ block.super }}
+
+{% endblock %}
