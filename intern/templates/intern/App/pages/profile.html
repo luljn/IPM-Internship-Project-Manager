@@ -45,7 +45,7 @@
                         </div>
                         <div class="top-menu d-flex align-items-center">
                             <div class="dropdown">
-                                <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if user.is_authenticated %}<img class="avatar" src="{{ user.member.photo.url }}" alt=""></a>{% endif %}
+                                <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if user.is_authenticated %}<img class="avatar" src="{{ user.intern.photo.url }}" alt=""></a>{% endif %}
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                     <a class="dropdown-item" href="{% url 'profile' %}"><i class="ik ik-user dropdown-icon"></i> Mon Profil</a>
                                     <a class="dropdown-item" href="{% url 'logout' %}"><i class="ik ik-power dropdown-icon"></i> Se déconnecter</a>
@@ -96,7 +96,7 @@
                                         {% if user.is_authenticated %}
                                         <div class="d-inline">
                                             <h5>Mon Profil</h5>
-                                            <span>{{ user.member.role }} chez ICCSOFT SA</span>
+                                            <span>{{ user.intern.role }} chez ICCSOFT SA</span>
                                         </div>
                                     </div>
                                 </div>
@@ -108,26 +108,30 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="text-center"> 
-                                            <img src="{{ user.member.photo.url }}" class="rounded-circle" width="150" />
+                                            <img src="{{ user.intern.photo.url }}" class="rounded-circle" width="150" />
                                             <h4 class="card-title mt-10">{{ user.username }}</h4>
-                                            <p class="card-subtitle">{{ user.member.role }}</p>
-                                            {% endif %}
+                                            <p class="card-subtitle">{{ user.intern.role }}</p>
                                         </div>
                                     </div>
                                     <hr class="mb-0"> 
-                                    <div class="card-body"> 
+                                    <div class="card-body">
+                                        {% for internship in Interships %}
+                                        {% if internship.intern.user.username == user.username %} 
                                         <small class="text-muted d-block">Date de debut de stage</small>
-                                        <h6>02 Mai 2023</h6> 
+                                        <h6>{{ internship.start_date }}</h6> 
                                         <small class="text-muted d-block pt-10">Date de fin de stage</small>
-                                        <h6>23 Juin 2023</h6>
+                                        <h6>{{ internship.end_date }}</h6>
                                         <!-- <small class="text-muted d-block pt-30">Reseaux Sociaux</small>
                                         <br/>
                                         <button class="btn btn-icon btn-facebook"><i class="fab fa-facebook-f"></i></button>
                                         <button class="btn btn-icon btn-twitter"><i class="fab fa-twitter"></i></button>
                                         <button class="btn btn-icon btn-instagram"><i class="fab fa-instagram"></i></button> -->
+                                        {% endif %}
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
+                            {% endif %}
                             <div class="col-lg-8 col-md-7">
                                 <div class="card">
                                     <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
@@ -157,14 +161,22 @@
                                                     </div>
                                                     <div class="col-md-3 col-6"> <strong>Rôle</strong>
                                                         <br>
-                                                        <p class="text-muted">{{ user.member.role }}</p>
+                                                        <p class="text-muted">{{ user.intern.role }}</p>
                                                     </div>
+                                                    {% for internship in Interships %}
+                                                    {% if internship.intern.user.username == user.username %}
+                                                    <div class="col-md-3 col-6"> <strong>Durée de stage</strong>
+                                                        <br>
+                                                        <p class="text-muted">{{ internship.duration }} semaines</p>
+                                                    </div>
+                                                    {% endif %}
+                                                    {% endfor %}
                                                     {% comment %} {% endif %} {% endcomment %}
                                                 </div>
-                                                <hr>
+                                                {% comment %} <hr>
                                                 <p class="mt-30">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
                                                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries </p>
-                                                <p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                                <p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p> {% endcomment %}
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">

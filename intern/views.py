@@ -4,6 +4,7 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import View
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from .models import *
 
 # Create your views here.
 
@@ -39,27 +40,33 @@ def home(request) :
 
 @login_required
 def project(request) :
+    
+    Projects = Project.objects.all()
+    Interships = Intership.objects.all()
 
-    return render(request, 'intern/App/pages/project.html')
+    return render(request, 'intern/App/pages/project.html', {'Projects' : Projects, 'Interships' : Interships})
 
 
 
 @login_required
 def tasklist(request) :
+    
+    Tasks = Task.objects.all()
 
-    return render(request, 'intern/App/pages/taskboard.html')
+    return render(request, 'intern/App/pages/taskboard.html', {'Tasks' : Tasks})
 
 
 
 class ProfilView(LoginRequiredMixin ,View) :
 
     template_name = 'intern/App/pages/profile.html'
+    Interships = Intership.objects.all()
 
 
 
     def get(self, request) : 
 
-        return render(request, self.template_name)
+        return render(request, self.template_name, {'Interships' : self.Interships})
     
     def post(self, request) : 
 
@@ -71,9 +78,11 @@ class DetailledTaskView(LoginRequiredMixin ,View) :
 
     template_name = 'intern/App/pages/task_detailled.html'
 
-    def get(self, request) :
+    def get(self, request, task_id) :
+        
+        Tasks = Task.objects.get(id=task_id)
 
-        return render(request, self.template_name)
+        return render(request, self.template_name, {'Tasks' : Tasks})
     
     def post(self, request) : 
 

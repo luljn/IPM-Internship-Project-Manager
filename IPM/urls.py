@@ -35,9 +35,9 @@ urlpatterns = [
     # page des taches.                       
     path('tasklist/', intern.views.tasklist, name='tasklist'),
     # page detaillee de chaque tache.
-    # path('tasklist/<int:task_id>', intern.views.DetailledTaskView.as_view()),
-    path('tasklist/1', intern.views.DetailledTaskView.as_view(), name='task_detailled'),
-    # page detaillee de chaque tache.
+    path('tasklist/<int:task_id>/', intern.views.DetailledTaskView.as_view(), name='task_detailled'),
+    # path('tasklist/1', intern.views.DetailledTaskView.as_view(), name='task_detailled'),
+    # page d'ajout tache.
     path('add_task/', intern.views.AddTaskView.as_view(), name='add_task'),
     # page du profil.                     
     path('profile/', intern.views.ProfilView.as_view(), name='profile'),

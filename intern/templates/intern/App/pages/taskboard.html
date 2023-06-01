@@ -45,7 +45,7 @@
                         </div>
                         <div class="top-menu d-flex align-items-center">
                             <div class="dropdown">
-                                <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if user.is_authenticated %}<img class="avatar" src="{{ user.member.photo.url }}" alt=""></a>{% endif %}
+                                <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if user.is_authenticated %}<img class="avatar" src="{{ user.intern.photo.url }}" alt=""></a>{% endif %}
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                     <a class="dropdown-item" href="{% url 'profile' %}"><i class="ik ik-user dropdown-icon"></i> Mon Profil</a>
                                     <a class="dropdown-item" href="{% url 'logout' %}"><i class="ik ik-power dropdown-icon"></i> Se déconnecter</a>
@@ -95,13 +95,14 @@
                                         <i class="ik ik-layers bg-blue"></i>
                                         <div class="d-inline">
                                             <h5>Mon Taskboard</h5>
-                                            <span>Voici la liste de vos tâches</span>
+                                            <span>Voici la liste de vos tâches.</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        
+                        {% if user.is_authenticated %}
                         <div class="card-body">
                             <table id="advanced_table" class="table">
                                 <thead>
@@ -122,6 +123,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for task in Tasks%}
+                                    {% if task.project.internship.intern.user.username == user.username %}
                                     <tr>
                                         <!-- <td>
                                             <label class="custom-control custom-checkbox">
@@ -129,17 +132,20 @@
                                                 <span class="custom-control-label">&nbsp;</span>
                                             </label>
                                         </td> -->
-                                        <td>1</td>
-                                        <td><a href="{% url 'task_detailled' %}">Implementation Python</a></td>
-                                        <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis voluptas, iste dolorem sint mollitia vel numquam itaque consequatur quos. Modi laboriosam quos nam dolor expedita accusantium doloremque illo dolore a.</td>
-                                        <td>En cours</td>
-                                        <td>2023/05/26</td>
-                                        <td>2023/05/22</td>
+                                        <td>{{ task.id }}</td>
+                                        <td><a href="{% url 'task_detailled' task.id %}">{{ task.title }}</a></td>
+                                        <td>{{ task.description }}</td>
+                                        <td>{{ task.status }}</td>
+                                        <td>{{ task.start_date }}</td>
+                                        <td>{{ task.end_date }}</td>
                                         <td><button>supprimer</button></td>
                                     </tr>
+                                    {% endif %}
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
+                        {% endif %}
 
                         <a href="{% url 'add_task' %}"><button class="btn btn-primary mr-2">Ajouter une tâche</button></a>
 
