@@ -137,7 +137,7 @@ class Intership(models.Model) :
         
     def __str__(self) :
         
-        return f'Stage de {self.intern.user.first_name} {self.intern.user.last_name}'
+        return f'Stage de {self.intern.user.first_name} {self.intern.user.last_name} - {self.start_date}'
     
     
     

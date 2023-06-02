@@ -62,4 +62,13 @@ class AddTaskForm(forms.ModelForm) :
         
         model = Task
         fields = ['title', 'description', 'start_date', 'end_date', 'status', 'project']
+        
+        
+        
+class UpdateProjectForm(forms.ModelForm) :
+    
+    class Meta :
+        
+        model = Project
+        fields = ['title', 'duration', 'description', 'start_date', 'end_date', 'status']
     

@@ -5,28 +5,20 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>IPM - Home</title>
+        <title>IPM - Task</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <!-- <link rel="icon" href="favicon.ico" type="image/x-icon" /> -->
+        <!-- <link rel="icon" href="../favicon.ico" type="image/x-icon" /> -->
 
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
         
         <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/@fortawesome/fontawesome-free/css/all.min.css' %}">
-        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/icon-kit/dist/css/iconkit.min.css' %}">
         <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/ionicons/dist/css/ionicons.min.css' %}">
+        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/icon-kit/dist/css/iconkit.min.css' %}">
         <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/perfect-scrollbar/css/perfect-scrollbar.css' %}">
-        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}">
-        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/jvectormap/jquery-jvectormap.css' %}">
-        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css' %}">
-        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/weather-icons/css/weather-icons.min.css' %}">
-        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/c3/c3.min.css' %}">
-        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/perfect-scrollbar/css/perfect-scrollbar.css' %}">
-        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/owl.carousel/dist/assets/owl.carousel.css' %}">
-        <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/owl.carousel/dist/assets/owl.theme.default.css' %}">
         <link rel="stylesheet" href="{% static 'intern/Decor/dist/css/theme.min.css' %}">
         <script src="{% static 'intern/Decor/src/js/vendor/modernizr-2.8.3.min.js' %}"></script>
     </head>
@@ -53,10 +45,7 @@
                         </div>
                         <div class="top-menu d-flex align-items-center">
                             <div class="dropdown">
-                                <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {% if user.is_authenticated %}
-                                    <img class="avatar" src="{{ user.intern.photo.url }}" alt="photo de profil"></a>
-                                    {% endif %}
+                                <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if user.is_authenticated %}<img class="avatar" src="{{ user.intern.photo.url }}" alt=""></a>{% endif %}
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                     <a class="dropdown-item" href="{% url 'profile' %}"><i class="ik ik-user dropdown-icon"></i> Mon Profil</a>
                                     <a class="dropdown-item" href="{% url 'logout' %}"><i class="ik ik-power dropdown-icon"></i> Se déconnecter</a>
@@ -84,10 +73,10 @@
                         <div class="nav-container">
                             <nav id="main-menu-navigation" class="navigation-main">
                                 <div class="nav-lavel">Navigation</div>
-                                <div class="nav-item active">
+                                <div class="nav-item">
                                     <a href="{% url 'home' %}"><i class="ik ik-home"></i><span>Accueil</span></a>
                                 </div>
-                                <div class="nav-item">
+                                <div class="nav-item active">
                                     <a href="{% url 'project' %}"><i class="ik ik-menu"></i><span>Mes Projets</span></a>
                                 </div>
                                 <div class="nav-item">
@@ -97,56 +86,138 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="main-content">
                     <div class="container-fluid">
                         <div class="page-header">
                             <div class="row align-items-end">
                                 <div class="col-lg-8">
                                     <div class="page-header-title">
-                                        <i class="ik ik-home bg-blue"></i>
+                                        <i class="ik ik-server bg-blue"></i>
                                         <div class="d-inline">
-                                            {% if user.is_authenticated %}
-                                            <h5>BIENVENUE</h5>
-                                            <span>{{ user.username }}</span>
-                                            {% endif %}
+                                            <h5>Projet</h5>
+                                            <span>{{ object.title }}</span>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header"><h3 class='title'>Détails du projet</h3></div>
+
+                                        <h2>Titre : </h2>
+                                        <p>{{ object.title }}</p>
+
+                                        <h2>Description : </h2>
+                                        <p>{{ object.description }}</p>
+
+                                        <h2>Date de début : </h2>
+                                        <p>{{ object.start_date }}</p>
+
+                                        <h2>Date de fin : </h2>
+                                        <p>{{ object.end_date }}</p>
+
+                                        <h2>Durée : </h2>
+                                        <p>{{ object.duration }} semaines</p>
+
+                                        <h2>Etat : </h2>
+                                        <p>{{ object.status }}</p>
+
+                                        {% if object.status == 'En cours' %}
+                                        <a href="{% url 'tasklist' %}"><button class="btn-supp">Liste des tâches</button></a>
+                                        <a href="{% url 'add_task' %}"><button class="btn-supp">Ajouter une tâche</button></a>
+                                        {% else %}
+                                        <a href="{% url 'tasklistEnded' %}"><button class="btn-supp">Liste des tâches</button></a>
+                                        {% endif %}
+                                        <style>
+                                            .title{
+                                                text-align: center;
+                                                font-size : 30px;
+                                            }
+
+                                            .btn-supp{
+                                                background-color: #4CAF50;
+                                                color: white;
+                                                width: 95px;
+                                                font-size: 14px;
+                                                text-align: center;
+                                                border: none;
+                                                padding: 5px;
+                                                border-radius: 3px;
+                                                margin-top: 10px;
+                                            }
+                                            
+                                            .btn-supp:active{
+                                                opacity: 0.5;
+                                            }
+                                
+                                            label {
+                                                display: inline;
+                                                width: 100px;
+                                                margin-top: 5px;
+                                                font-size: 15px;
+                                                font-weight: bold;
+                                            }
+                                              
+                                            input[type="text"],
+                                            textarea 
+                                            {
+                                                padding: 5px;
+                                                border: 1px solid #ccc;
+                                                border-radius: 3px;
+                                                width: 300px;
+                                                margin-top: 5px;
+                                                font-size: 14px;
+                                            }
+                                        </style>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <a href="{% url 'project' %}"><button class="btn btn-primary mr-2">Liste des projets</button></a>
+
+                    </div>
+                </div>
+                
+                <footer class="footer">
+                    <div class="w-100 clearfix">
+                        <span class="text-center text-sm-left d-md-inline-block">Copyright © 2023 ICCSOFT SA - Internship Project Manager All Rights Reserved.</span>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+
+        <div class="modal fade apps-modal" id="appsModal" tabindex="-1" role="dialog" aria-labelledby="appsModalLabel" aria-hidden="true" data-backdrop="false">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ik ik-x-circle"></i></button>
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="quick-search">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4 ml-auto mr-auto">
+                                    <div class="input-wrap">
+                                        <input type="text" id="quick-search" class="form-control" placeholder="Search..." />
+                                        <i class="ik ik-search"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <footer class="footer">
-                    <div class="w-100 clearfix">
-                        <span class="text-center text-sm-left d-md-inline-block">Copyright © 2023 ICCSOFT SA - Internship Project Manager All Rights Reserved.</span>
-                    </div>
-                </footer>
-                
             </div>
         </div>
         
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script>window.jQuery || document.write('<script src="src/js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="../src/js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
         <script src="{% static 'intern/Decor/node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
         <script src="{% static 'intern/Decor/node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
         <script src="{% static 'intern/Decor/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js' %}"></script>
         <script src="{% static 'intern/Decor/node_modules/screenfull/dist/screenfull.js' %}"></script>
-        <script src="{% static 'intern/Decor/node_modules/datatables.net/js/jquery.dataTables.min.js' %}"></script>
-        <script src="{% static 'intern/Decor/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
-        <script src="{% static 'intern/Decor/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
-        <script src="{% static 'intern/Decor/node_modules/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
-        <script src="{% static 'intern/Decor/node_modules/jvectormap/jquery-jvectormap.min.js' %}"></script>
-        <script src="{% static 'intern/Decor/node_modules/jvectormap/tests/assets/jquery-jvectormap-world-mill-en.js' %}"></script>
-        <script src="{% static 'intern/Decor/node_modules/moment/moment.js' %}"></script>
-        <script src="{% static 'intern/Decor/node_modules/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js' %}"></script>
-        <script src="{% static 'intern/Decor/node_modules/d3/dist/d3.min.js' %}"></script>
-        <script src="{% static 'intern/Decor/node_modules/c3/c3.min.js' %}"></script>
-        <script src="{% static 'intern/Decor/js/tables.js' %}"></script>
-        <script src="{% static 'intern/Decor/js/widgets.j' %}"></script>
-        <script src="{% static 'intern/Decor/js/charts.js' %}"></script>
+        <script src="{% static 'intern/Decor/node_modules/nestable/jquery.nestable.js' %}"></script>
         <script src="{% static 'intern/Decor/dist/js/theme.min.js' %}"></script>
+        <script src="{% static 'intern/Decor/js/taskboard.js' %}"></script>
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

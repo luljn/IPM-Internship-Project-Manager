@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.views.generic import View
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.views.generic import DetailView
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
@@ -56,9 +57,20 @@ def project(request) :
 @login_required
 def tasklist(request) :
     
+    Projects = Project.objects.all()
     Tasks = Task.objects.all()
 
-    return render(request, 'intern/App/pages/taskboard.html', {'Tasks' : Tasks})
+    return render(request, 'intern/App/pages/taskboard.html', {'Projects' : Projects,'Tasks' : Tasks})
+
+
+
+@login_required
+def tasklistEnded(request) :
+    
+    Projects = Project.objects.all()
+    Tasks = Task.objects.all()
+
+    return render(request, 'intern/App/pages/taskboardEnded.html', {'Projects' : Projects,'Tasks' : Tasks})
 
 
 
@@ -101,15 +113,23 @@ class AddTaskView(LoginRequiredMixin, CreateView) :
         return super().dispatch(request, *args, **kwargs)
     
     # Pour définir le projet de l'utilisateur dynamiquement.
+    # (Ici, on recupere l'utilisateur et son projet 'En cours').
     def get_initial(self) :
         
         initial = super(AddTaskView, self).get_initial()
         user = self.request.user # On recupere l'utilisateur actuellement connecté.
         intern = Intern.objects.get(user=user)
-        internship = Intership.objects.get(intern=intern)
-        project = Project.objects.get(internship=internship)
+        # internship = Intership.objects.get(intern=intern)
+        internships = Intership.objects.filter(intern=intern)
+        # project = Project.objects.get(internship=internship)
+        
+        for internship in internships :
             
-        initial['project'] = project
+            if internship.status == 'En cours' :
+                
+                project = Project.objects.get(internship=internship)
+                initial['project'] = project
+        
         return initial
     
     # Pour rendre le champ de choix du projet invisible.
@@ -127,6 +147,22 @@ class DeleteTask(LoginRequiredMixin, DeleteView) :
     template_name = 'intern/App/pages/task_delete.html'
     model = Task
     success_url = reverse_lazy('tasklist')
+    
+    
+    
+class UpdateProjectView(LoginRequiredMixin, UpdateView) : 
+    
+    model = Project
+    template_name = 'intern/App/pages/project_update.html'
+    form_class = UpdateProjectForm
+    success_url = reverse_lazy('project')
+    
+    
+    
+class DetailledProjectView(LoginRequiredMixin, DetailView) :
+    
+    model = Project
+    template_name = 'intern/App/pages/project_detailled.html'
     
     
     

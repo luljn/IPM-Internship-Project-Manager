@@ -77,7 +77,7 @@
                                     <a href="{% url 'home' %}"><i class="ik ik-home"></i><span>Accueil</span></a>
                                 </div>
                                 <div class="nav-item active">
-                                    <a href="{% url 'project' %}"><i class="ik ik-menu"></i><span>Mon Projet</span></a>
+                                    <a href="{% url 'project' %}"><i class="ik ik-menu"></i><span>Mes Projets</span></a>
                                 </div>
                                 <div class="nav-item">
                                     <a href="{% url 'tasklist' %}"><i class="ik ik-layers"></i><span>Mes tâches</span></a>
@@ -94,19 +94,73 @@
                                     <div class="page-header-title">
                                         <i class="ik ik-menu bg-blue"></i>
                                         <div class="d-inline">
-                                            <h5>Mon Projet</h5>
-                                            {% if user.is_authenticated and user.intern.role == 'Stagiaire' %}
-                                            {% for project in Projects %}
-                                                {% if project.internship.intern.user.username == user.username %}
-                                            <span>{{ project.title }}</span>
-                                                {% endif %}
-                                            {% endfor %}
-                                            {% endif %}
+                                            <h5>Mes Projets</h5>
+                                            <span>Voici la liste de vos projets</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        {% if user.is_authenticated %}
+                        <div class="card-body">
+
+                            {% comment %} {% for project in Projects %}
+                            {% if project.internship.intern.user.username == user.username %} {% endcomment %}
+
+                            <table id="advanced_table" class="table">
+                                {% comment %} <caption>{{ project.title }}</caption> {% endcomment %}
+                                <thead>
+                                    <tr>
+                                        <th>Projet</th>
+                                        <th>Description</th>
+                                        <th>Etat</th>
+                                        <th>Début</th>
+                                        <th>Fin</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for project in Projects %}
+                                    {% if project.internship.intern.user.username == user.username %}
+                                    <tr>
+                                        {% comment %} {% for project in Projects %}
+                                        {% if project.internship.intern.user.username == user.username %} {% endcomment %}
+                                        
+                                        <td>{{ project.title }}</td>
+                                        <td>{{ project.description }}</td>
+                                        <td>{{ project.status }}</td>
+                                        <td>{{ project.start_date }}</td>
+                                        <td>{{ project.end_date }}</td>
+                                        {% if project.status == 'En cours' %}
+                                        <td><a href="{% url 'update_project' project.id %}"><button class='btn-modify'>Modifier</button></a></td>
+                                        <td><a href="{% url 'project_detailled' project.id %}"><button class='btn-modify'>Consulter</button></a></td>
+                                        {% else %}
+                                        <td><a href="{% url 'project_detailled' project.id %}"><button class='btn-modify'>Consulter</button></a></td>
+                                        {% endif %}
+                                        <style>
+                                            .btn-modify{
+                                                background-color: #4CAF50;
+                                                color: white;
+                                                font-size: 12px;
+                                                border: none;
+                                                padding: 5px;
+                                                border-radius: 3px;
+                                            }
+                                           
+                                            .btn-modify:active{
+                                                opacity: 0.5;
+                                            }
+                                        </style>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+
                     </div>
                 </div>
                
