@@ -95,6 +95,31 @@ class AddTaskView(LoginRequiredMixin, CreateView) :
     form_class = AddTaskForm
     success_url = reverse_lazy('tasklist')
     
+    # On definit la methode dispatch, pour pouvoir utiliser l'objet request.
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        return super().dispatch(request, *args, **kwargs)
+    
+    # Pour définir le projet de l'utilisateur dynamiquement.
+    def get_initial(self) :
+        
+        initial = super(AddTaskView, self).get_initial()
+        user = self.request.user # On recupere l'utilisateur actuellement connecté.
+        intern = Intern.objects.get(user=user)
+        internship = Intership.objects.get(intern=intern)
+        project = Project.objects.get(internship=internship)
+            
+        initial['project'] = project
+        return initial
+    
+    # Pour rendre le champ de choix du projet invisible.
+    def get_form(self, form_class=None) :
+        
+        form = super().get_form(form_class)
+        form.fields['project'].widget = forms.HiddenInput(attrs={'hidden':True})
+        form.fields['project'].label = ''
+        return form
+    
     
     
 class DeleteTask(LoginRequiredMixin, DeleteView) :

@@ -136,14 +136,14 @@
                                 <div class="card">
                                     <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#last-month" role="tab" aria-controls="pills-profile" aria-selected="false">Profil</a>
+                                            <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#me" role="tab" aria-controls="pills-profile" aria-selected="false">Profil</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#previous-month" role="tab" aria-controls="pills-setting" aria-selected="false">Informations Personnelles</a>
+                                            <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#informations" role="tab" aria-controls="pills-setting" aria-selected="false">Informations Personnelles</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="pills-tabContent">
-                                        <div class="tab-pane fade show active" id="last-month" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                        <div class="tab-pane fade show active" id="me" role="tabpanel" aria-labelledby="pills-profile-tab">
                                             <div class="card-body">
                                                 <div class="row">
                                                     {% if user.is_authenticated %}
@@ -179,7 +179,7 @@
                                                 <p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p> {% endcomment %}
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
+                                        <div class="tab-pane fade" id="informations" role="tabpanel" aria-labelledby="pills-setting-tab">
                                             <div class="card-body">
                                                 <form class="form-horizontal" method="post">
                                                     <div class="form-group">
