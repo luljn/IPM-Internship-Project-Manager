@@ -1,14 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.views.generic import View
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import DetailView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from django.contrib import messages
 from .models import *
 from .forms import *
 
@@ -74,20 +74,33 @@ def tasklistEnded(request) :
 
 
 
-class ProfilView(LoginRequiredMixin ,View) :
-
-    template_name = 'intern/App/pages/profile.html'
-    Interships = Intership.objects.all()
-
-
-
-    def get(self, request) : 
-
-        return render(request, self.template_name, {'Interships' : self.Interships})
+@login_required
+def profile_detail_and_update(request) :
     
-    def post(self, request) : 
+    Interships = Intership.objects.all()
+    user = request.user
+    form = UpdateProfileForm(request.POST or None, instance=user)
+    
+    if request.method == 'POST':
+        
+        if form.is_valid() :
+            
+            form.save()
+            return redirect('profile')
+    
+    return render(request, 'intern/App/pages/profile.html', {'Interships' : Interships, 'form' : form})
 
-        pass
+
+
+class ChangePasswordView(LoginRequiredMixin, PasswordChangeView) :
+    
+    template_name = 'intern/App/pages/password_change.html'
+    success_url = reverse_lazy('profile')
+    
+    def form_valid(self, form):
+        
+        messages.success(self.request, 'Votre mot de passe a été modifié avec succès.')
+        return super().form_valid(form)
 
 
 

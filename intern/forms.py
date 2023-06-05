@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import PasswordChangeForm
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import *
@@ -71,4 +72,21 @@ class UpdateProjectForm(forms.ModelForm) :
         
         model = Project
         fields = ['title', 'duration', 'description', 'start_date', 'end_date', 'status']
+        
+        
+        
+class UpdateProfileForm(forms.ModelForm) :
+    
+    class Meta :
+        
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
+        
+    def __init__(self, *args, **kwargs) :
+        
+        super().__init__(*args, **kwargs)
+        self.fields['username'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+        self.fields['email'].required = True
     

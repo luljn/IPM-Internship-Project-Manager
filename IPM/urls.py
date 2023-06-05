@@ -41,7 +41,7 @@ urlpatterns = [
     # page de suppresion d'une tâche.
     path('delete_task/<int:pk>/', intern.views.DeleteTask.as_view(), name='delete_task'),
     # page du profil.                     
-    path('profile/', intern.views.ProfilView.as_view(), name='profile'),
+    path('profile/', intern.views.profile_detail_and_update, name='profile'),
     # path pour l'envoie du email après inscription d'un stagiaire.
     path("send_email/", intern.views.send_welcome_email, name="send_email"),
     # page de modification des infos d'un projet.
@@ -50,6 +50,8 @@ urlpatterns = [
     path('project/<int:pk>/', intern.views.DetailledProjectView.as_view(), name='project_detailled'),
     # page des tâches terminés ou annulés.                       
     path('tasklist_project_ended/', intern.views.tasklistEnded, name='tasklistEnded'),
+    # page de modification de mot de passe.
+    path('change_password/', intern.views.ChangePasswordView.as_view(), name='change_password')
 ]
 
 handler404 = 'intern.views.error404'
