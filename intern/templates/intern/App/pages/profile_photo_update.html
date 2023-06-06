@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>IPM - Change Password</title>
+        <title>IPM - Change profile photo</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -94,7 +94,7 @@
                                     <div class="page-header-title">
                                         <i class="ik ik-file-text bg-blue"></i>
                                         <div class="d-inline">
-                                            <h5>Modification de mot de passe</h5>
+                                            <h5>Modification de photo de profil</h5>
                                             <span></span>
                                         </div>
                                     </div>
@@ -104,7 +104,7 @@
 
                         <div class="col-md-6">
                                 <div class="card">
-                                    <div class="card-header"><h3 class='title'>Modifier le mot de passe</h3></div>
+                                    <div class="card-header"><h3 class='title'>Modifier la photo de profil</h3></div>
                                     <div class="card-body">
                                         <form class="forms-sample" method='post'>
                                             {% csrf_token %}
@@ -114,10 +114,10 @@
                                                 {{ field.label_tag }}
                                                 {{ field }}
                                                 </div>
-                                            {% endfor %} {% endcomment %}
+                                            {% endfor %}
                                             {% if error %}
                                                 <p class = 'error'>{{ error }}</p>
-                                            {% endif %}
+                                            {% endif %} {% endcomment %}
                                             <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
                                         </form> 
                                             <style>

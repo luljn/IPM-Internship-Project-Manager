@@ -174,7 +174,10 @@
                                                     {% comment %} {% endif %} {% endcomment %}
                                                 </div>
                                             </div>
+                                            {% if user.is_authenticated %}
                                             <a href="{% url 'change_password' %}"><button class="btn btn-primary mr-2">Modifier le mot de passe</button></a>
+                                            {% comment %} <a href="{% url 'change_photo' user.intern.id %}"><button class="btn btn-primary mr-2">Modifier la photo de profil</button></a> {% endcomment %}
+                                            {% endif %}
                                         </div>
                                         
 
@@ -193,6 +196,23 @@
                                                     {% endif %}
                                                     <button class="btn btn-success" type="submit">Enregistrer</button>
                                                 </form>
+                                                <style>
+                                                    .update-form label{
+                                                        {% comment %} color: #45f3ff; {% endcomment %}
+                                                        font-size: 15px;
+                                                        font-weight: bold;
+                                                        margin-bottom : 5px;
+                                                    }
+
+                                                    .update-form input{
+                                                        width: 100%;
+                                                        padding: 5px 5px 5px;
+                                                        background: transparent;
+                                                        outline: none;
+                                                        margin-bottom : 10px;
+                                                        font-size: 15px;
+                                                    }
+                                                </style>
                                             </div>
                                         </div>
                                         {% endif %}

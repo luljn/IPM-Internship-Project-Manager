@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import PasswordChangeForm
+from ckeditor.widgets import CKEditorWidget
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import *
@@ -55,6 +55,15 @@ class UpdateTaskForm(forms.ModelForm) :
         model = Task
         fields = ['title', 'description', 'start_date', 'end_date', 'status']
         
+        start_date = forms.DateField(required=False)
+        end_date = forms.DateField(required=False)
+        
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            # 'description': CKEditorWidget(),
+        }
+        
         
         
 class AddTaskForm(forms.ModelForm) :
@@ -64,6 +73,16 @@ class AddTaskForm(forms.ModelForm) :
         model = Task
         fields = ['title', 'description', 'start_date', 'end_date', 'status', 'project']
         
+        start_date = forms.DateField(required=False)
+        end_date = forms.DateField(required=False)
+        description = forms.CharField(widget=CKEditorWidget())
+        
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            # 'description': CKEditorWidget(),
+        }
+        
         
         
 class UpdateProjectForm(forms.ModelForm) :
@@ -71,7 +90,11 @@ class UpdateProjectForm(forms.ModelForm) :
     class Meta :
         
         model = Project
-        fields = ['title', 'duration', 'description', 'start_date', 'end_date', 'status']
+        fields = ['description', 'status']
+        
+        widgets = {
+            'description': CKEditorWidget(),
+        }
         
         
         
@@ -89,4 +112,13 @@ class UpdateProfileForm(forms.ModelForm) :
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['email'].required = True
+        
+        
+        
+class UpdatePhotoForm(forms.ModelForm) : 
+    
+    class Meta :
+        
+        model = Intern
+        fields = ['photo']
     

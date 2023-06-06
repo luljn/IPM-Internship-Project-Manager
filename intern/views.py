@@ -1,9 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
-from django.views.generic import View
+from django.views.generic import DetailView, View
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.views.generic import DetailView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
@@ -65,12 +64,12 @@ def tasklist(request) :
 
 
 @login_required
-def tasklistEnded(request) :
+def tasklistEnded(request, id) :
     
-    Projects = Project.objects.all()
-    Tasks = Task.objects.all()
+    project = Project.objects.get(id=id)
+    Tasks = Task.objects.filter(project=project)
 
-    return render(request, 'intern/App/pages/taskboardEnded.html', {'Projects' : Projects,'Tasks' : Tasks})
+    return render(request, 'intern/App/pages/taskboardEnded.html', {'project' : project,'Tasks' : Tasks})
 
 
 
@@ -89,6 +88,36 @@ def profile_detail_and_update(request) :
             return redirect('profile')
     
     return render(request, 'intern/App/pages/profile.html', {'Interships' : Interships, 'form' : form})
+
+
+
+class ProfilePhotoUpdate(LoginRequiredMixin, UpdateView) :
+    
+    model = Intern
+    template_name = 'intern/App/pages/profile_photo_update.html'
+    form_class = UpdatePhotoForm
+    success_url = reverse_lazy('profile')
+
+
+
+# @login_required
+# def profile_photo_update(request) :
+    
+#     form = UpdatePhotoForm(request.POST)
+    
+#     if request.method == 'POST':
+        
+#         if form.is_valid() :
+            
+#             form = UpdatePhotoForm(request.POST, request.FILES)
+#             photo = form.save(commit=False)
+#             # set the uploader to the user before saving the model
+#             photo.uploader = request.user
+#             # now we can save
+#             photo.save()
+#             return redirect('profile')
+    
+#     return render(request, 'intern/App/pages/profile_photo_update.html', {'form' : form})
 
 
 
@@ -142,6 +171,8 @@ class AddTaskView(LoginRequiredMixin, CreateView) :
                 
                 project = Project.objects.get(internship=internship)
                 initial['project'] = project
+        
+        initial['status'] = 'En attente'
         
         return initial
     

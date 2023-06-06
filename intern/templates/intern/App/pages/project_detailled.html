@@ -128,7 +128,7 @@
                                         <a href="{% url 'tasklist' %}"><button class="btn-supp">Liste des tâches</button></a>
                                         <a href="{% url 'add_task' %}"><button class="btn-supp">Ajouter une tâche</button></a>
                                         {% else %}
-                                        <a href="{% url 'tasklistEnded' %}"><button class="btn-supp">Liste des tâches</button></a>
+                                        <a href="{% url 'tasklistEnded' object.id %}"><button class="btn-supp">Liste des tâches</button></a>
                                         {% endif %}
                                         <style>
                                             .title{

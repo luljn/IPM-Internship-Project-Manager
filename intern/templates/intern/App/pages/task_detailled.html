@@ -106,9 +106,10 @@
                                 <div class="card">
                                     <div class="card-header"><h3 class='title'>Modifier la tâche</h3></div>
                                     <div class="card-body">
-                                        <form class="forms-sample" method='post'>
+                                        <form class="update-form" method='post'>
                                             {% csrf_token %}
-                                            {% for field in form %}
+                                            {{ form.as_p }}
+                                            {% comment %} {% for field in form %}
                                                 <div class="form-group">
                                                 {{ field.label_tag }}
                                                 {{ field }}
@@ -116,7 +117,7 @@
                                             {% endfor %}
                                             {% if error %}
                                                 <p class = 'error'>{{ error }}</p>
-                                            {% endif %}
+                                            {% endif %} {% endcomment %}
                                             <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
                                         </form>
                                         <a href="{% url 'delete_task' object.id %}"><button class='btn-supp'>Supprimer</button></a> 
@@ -140,23 +141,33 @@
                                                 .btn-supp:active{
                                                     opacity: 0.5;
                                                 }
-                                                label {
-                                                    display: inline;
-                                                    width: 100px;
-                                                    margin-top: 5px;
-                                                    font-size: 15px;
-                                                    font-weight: bold;
-                                                }
                                                   
-                                                input[type="text"],
+                                                .update-form p input[type="text"],
                                                 textarea 
                                                 {
                                                     padding: 5px;
                                                     border: 1px solid #ccc;
                                                     border-radius: 3px;
-                                                    width: 300px;
+                                                    width: 100%;
                                                     margin-top: 5px;
-                                                    font-size: 14px;
+                                                    font-size: 15px;
+                                                    font-weight: bold;
+                                                }
+
+                                                .update-form p{
+                                                    {% comment %} color: #45f3ff; {% endcomment %}
+                                                    font-size: 15px;
+                                                    font-weight: bold;
+                                                    margin-bottom : 5px;
+                                                }
+    
+                                                .update-form input{
+                                                    width: 100%;
+                                                    padding: 5px 5px 5px;
+                                                    background: transparent;
+                                                    outline: none;
+                                                    margin-bottom : 10px;
+                                                    font-size: 15px;
                                                 }
                                             </style>
                                     </div>

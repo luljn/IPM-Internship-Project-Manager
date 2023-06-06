@@ -20,6 +20,8 @@
         <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/icon-kit/dist/css/iconkit.min.css' %}">
         <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/perfect-scrollbar/css/perfect-scrollbar.css' %}">
         <link rel="stylesheet" href="{% static 'intern/Decor/dist/css/theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'ckeditor/ckeditor/skins/moono-lisa/editor.css' %}">
+        <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>   
         <script src="{% static 'intern/Decor/src/js/vendor/modernizr-2.8.3.min.js' %}"></script>
     </head>
 
@@ -106,9 +108,10 @@
                                 <div class="card">
                                     <div class="card-header"><h3>Ajouter une tâche</h3></div>
                                     <div class="card-body">
-                                        <form class="forms-sample" method='post'>
+                                        <form class="add-form" method='post'>
                                             {% csrf_token %}
-                                            {% for field in form %}
+                                            {{ form.as_p }}
+                                            {% comment %} {% for field in form %}
                                                 <div class="form-group">
                                                 {{ field.label_tag }}
                                                 {{ field }}
@@ -116,7 +119,7 @@
                                             {% endfor %}
                                             {% if error %}
                                                 <p class = 'error'>{{ error }}</p>
-                                            {% endif %}
+                                            {% endif %} {% endcomment %}
                                             <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
                                         </form>
                                         <style>
@@ -139,13 +142,6 @@
                                             .btn-supp:active{
                                                 opacity: 0.5;
                                             }
-                                            label {
-                                                display: inline;
-                                                width: 100px;
-                                                margin-top: 5px;
-                                                font-size: 15px;
-                                                font-weight: bold;
-                                            }
                                               
                                             input[type="text"],
                                             textarea 
@@ -156,6 +152,22 @@
                                                 width: 300px;
                                                 margin-top: 5px;
                                                 font-size: 14px;
+                                            }
+
+                                            .add-form p{
+                                                {% comment %} color: #45f3ff; {% endcomment %}
+                                                font-size: 15px;
+                                                font-weight: bold;
+                                                margin-bottom : 5px;
+                                            }
+
+                                            .add-form input{
+                                                width: 100%;
+                                                padding: 5px 5px 5px;
+                                                background: transparent;
+                                                outline: none;
+                                                margin-bottom : 10px;
+                                                font-size: 15px;
                                             }
                                         </style>
                                     </div>

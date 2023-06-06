@@ -20,6 +20,8 @@
         <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/icon-kit/dist/css/iconkit.min.css' %}">
         <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/perfect-scrollbar/css/perfect-scrollbar.css' %}">
         <link rel="stylesheet" href="{% static 'intern/Decor/dist/css/theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'ckeditor/ckeditor.css' %}">
+        <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
         <script src="{% static 'intern/Decor/src/js/vendor/modernizr-2.8.3.min.js' %}"></script>
     </head>
 
@@ -108,7 +110,8 @@
                                     <div class="card-body">
                                         <form class="forms-sample" method='post'>
                                             {% csrf_token %}
-                                            {% for field in form %}
+                                            {{ form.as_p }}
+                                            {% comment %} {% for field in form %}
                                                 <div class="form-group">
                                                 {{ field.label_tag }}
                                                 {{ field }}
@@ -116,7 +119,7 @@
                                             {% endfor %}
                                             {% if error %}
                                                 <p class = 'error'>{{ error }}</p>
-                                            {% endif %}
+                                            {% endif %} {% endcomment %}
                                             <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
                                         </form>
                                             <style>

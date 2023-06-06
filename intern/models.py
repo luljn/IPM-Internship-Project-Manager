@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from ckeditor.fields import RichTextField
 
 
 # Create your models here.
@@ -125,8 +126,8 @@ class Intership(models.Model) :
     )
     
     duration = models.IntegerField(null=True, verbose_name="durée du stage(en semaines)")
-    start_date = models.DateField(verbose_name="date de début")
-    end_date = models.DateField(verbose_name="date de fin")
+    start_date = models.DateField(null=True, blank=True, verbose_name="date de début")
+    end_date = models.DateField(null=True, blank=True, verbose_name="date de fin")
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="etat")
     intern = models.ForeignKey(Intern, on_delete=models.CASCADE)
     
@@ -156,10 +157,10 @@ class Project(models.Model) :
     )
     
     title = models.CharField(max_length=500, verbose_name="titre")
-    description = models.CharField(max_length=5500, verbose_name="description")
+    description = models.TextField(verbose_name="description")
     duration = models.IntegerField(null=True, verbose_name="durée du projet(en semaines)")
-    start_date = models.DateField(verbose_name="date de début")
-    end_date = models.DateField(verbose_name="date de fin")
+    start_date = models.DateField(null=True, blank=True, verbose_name="date de début")
+    end_date = models.DateField(null=True, blank=True, verbose_name="date de fin")
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="etat")
     internship = models.ForeignKey(Intership, on_delete=models.CASCADE)
     
@@ -190,9 +191,9 @@ class Task(models.Model) :
     
     title = models.CharField(max_length=500, verbose_name="titre")
     duration = models.IntegerField(null=True, verbose_name="durée de la tâche(en jours)")
-    description = models.CharField(max_length=5500, verbose_name="description")
-    start_date = models.DateField(verbose_name="date de début")
-    end_date = models.DateField(verbose_name="date de fin")
+    description = models.TextField(verbose_name="description")
+    start_date = models.DateField(null=True, blank=True, verbose_name="date de début")
+    end_date = models.DateField(null=True, blank=True, verbose_name="date de fin")
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="etat")
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     
@@ -222,10 +223,10 @@ class Phase(models.Model) :
     )
     
     title = models.CharField(max_length=500, verbose_name="titre")
-    description = models.CharField(max_length=5500, verbose_name="description")
+    description = models.TextField(verbose_name="description")
     duration = models.IntegerField(null=True, verbose_name="durée de la phase(en jours)")
-    start_date = models.DateField(verbose_name="date de début")
-    end_date = models.DateField(verbose_name="date de fin")
+    start_date = models.DateField(null=True, blank=True, verbose_name="date de début")
+    end_date = models.DateField(null=True, blank=True, verbose_name="date de fin")
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="etat")
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     
@@ -239,7 +240,7 @@ class Phase(models.Model) :
 class Document(models.Model) :
     
     title = models.CharField(max_length=500, verbose_name="titre")
-    description = models.CharField(max_length=5500, verbose_name="description")
+    description = models.TextField(verbose_name="description")
     is_public = models.BooleanField(default=False, verbose_name="Autorisation de partage")
     project = models.ForeignKey(Project, null=True, on_delete=models.SET_NULL)
     phase = models.ForeignKey(Phase, null=True, on_delete=models.SET_NULL)

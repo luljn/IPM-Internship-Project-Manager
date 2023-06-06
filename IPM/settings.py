@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'ckeditor',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -149,3 +150,13 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mbohlulajonathan4@gmail.com'
 
 EMAIL_HOST_PASSWORD = 'ffifovqhylvtungk'
+
+# Jazzmin settings.
+
+JAZZMIN_SETTINGS = {
+    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    "site_title": "IPM Administration",
+
+    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_header": "IPM Administration",
+    }

@@ -95,13 +95,9 @@
                                         <i class="ik ik-layers bg-blue"></i>
                                         <div class="d-inline">
                                             {% if user.is_authenticated %}
-                                            {% for project in Projects %}
-                                            {% if  project.internship.intern.user.username == user.username and project.status != 'En cours'%}
                                             <h5>Mon Taskboard</h5>
                                             <span>Projet {{ project.title }}</span>
                                             <span> - Etat : {{ project.status }}</span>
-                                            {% endif %}
-                                            {% endfor %}
                                             {% endif %}
                                         </div>
                                     </div>
@@ -114,12 +110,6 @@
                             <table id="advanced_table" class="table">
                                 <thead>
                                     <tr>
-                                        <!-- <th class="nosort" width="10">
-                                            <label class="custom-control custom-checkbox m-0">
-                                                <input type="checkbox" class="custom-control-input" id="selectall" name="" value="option2">
-                                                <span class="custom-control-label">&nbsp;</span>
-                                            </label>
-                                        </th> -->
                                         {% comment %} <th>#</th> {% endcomment %}
                                         <th>Titre</th>
                                         <th>Description</th>
@@ -132,22 +122,14 @@
                                 </thead>
                                 <tbody>
                                     {% for task in Tasks%}
-                                    {% if task.project.internship.intern.user.username == user.username and task.project.status != 'En cours' %}
+                                    {% comment %} {% if task.project.internship.intern.user.username == user.username and task.project.status != 'En cours' %} {% endcomment %}
                                     <tr>
-                                        <!-- <td>
-                                            <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input select_all_child" id="" name="" value="option2">
-                                                <span class="custom-control-label">&nbsp;</span>
-                                            </label>
-                                        </td> -->
                                         {% comment %} <td>{{ task.id }}</td> {% endcomment %}
                                         <td>{{ task.title }}</td>
                                         <td>{{ task.description }}</td>
                                         <td>{{ task.status }}</td>
                                         <td>{{ task.start_date }}</td>
                                         <td>{{ task.end_date }}</td>
-                                        {% comment %} <td><a href="{% url 'task_detailled' task.id %}"><button class='btn-supp'>Modifier</button></a></td>
-                                        <td><a href="{% url 'delete_task' task.id %}"><button class='btn-supp'>Supprimer</button></a></td> {% endcomment %}
                                         <style>
                                             .btn-supp{
                                                 background-color: #4CAF50;
@@ -162,15 +144,15 @@
                                             }
                                         </style>
                                     </tr>
-                                    {% endif %}
+                                    {% comment %} {% endif %} {% endcomment %}
                                     {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                         {% endif %}
-
-                        {% comment %} <a href="{% url 'add_task' %}"><button class="btn btn-primary mr-2">Ajouter une tâche</button></a> {% endcomment %}
-
+                                
+                        <a href="{% url 'project_detailled' project.id %}"><button class="btn btn-primary mr-2">Retour au projet</button></a>
+                
                     </div>
                 </div>
                 

@@ -49,9 +49,11 @@ urlpatterns = [
     # page de détaillée de chaque projet.
     path('project/<int:pk>/', intern.views.DetailledProjectView.as_view(), name='project_detailled'),
     # page des tâches terminés ou annulés.                       
-    path('tasklist_project_ended/', intern.views.tasklistEnded, name='tasklistEnded'),
+    path('tasklist_project_ended/<int:id>/', intern.views.tasklistEnded, name='tasklistEnded'),
     # page de modification de mot de passe.
-    path('change_password/', intern.views.ChangePasswordView.as_view(), name='change_password')
+    path('change_password/', intern.views.ChangePasswordView.as_view(), name='change_password'),
+    # page de modification de la photo de profil.
+    path('change_photo/<int:pk>/', intern.views.ProfilePhotoUpdate.as_view(), name='change_photo')
 ]
 
 handler404 = 'intern.views.error404'
