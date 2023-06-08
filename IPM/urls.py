@@ -53,7 +53,15 @@ urlpatterns = [
     # page de modification de mot de passe.
     path('change_password/', intern.views.ChangePasswordView.as_view(), name='change_password'),
     # page de modification de la photo de profil.
-    path('change_photo/<int:pk>/', intern.views.ProfilePhotoUpdate.as_view(), name='change_photo')
+    path('change_photo/<int:pk>/', intern.views.ProfilePhotoUpdate.as_view(), name='change_photo'),
+    # page des documents.
+    path('documents/', intern.views.documentlist, name='documents'),
+    # page d'ajout de document.
+    path('add_document/', intern.views.UploadDocumentView.as_view(), name='add_document'),
+    # page de téléchargement de document.
+    path('download_document/<int:pk>/', intern.views.DownloadFileView.as_view(), name='download_document'),
+    # page de suppression de document.
+    path('delete_document/<int:pk>/', intern.views.DeleteDocument.as_view(), name='delete_document')
 ]
 
 handler404 = 'intern.views.error404'

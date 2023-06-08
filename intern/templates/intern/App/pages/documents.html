@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>IPM - Change profile photo</title>
+        <title>IPM - Documents</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -82,7 +82,7 @@
                                 <div class="nav-item">
                                     <a href="{% url 'tasklist' %}"><i class="ik ik-layers"></i><span>Mes tâches</span></a>
                                 </div>
-                                <div class="nav-item">
+                                <div class="nav-item active">
                                     <a href="{% url 'documents' %}"><i class="ik ik-file-text"></i><span>Documents</span></a>
                                 </div>
                             </nav>
@@ -97,76 +97,116 @@
                                     <div class="page-header-title">
                                         <i class="ik ik-file-text bg-blue"></i>
                                         <div class="d-inline">
-                                            <h5>Modification de photo de profil</h5>
+                                            {% if user.is_authenticated %}
+                                            <h5>Documents</h5>
                                             <span></span>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header"><h3 class='title'>Modifier la photo de profil</h3></div>
-                                    <div class="card-body">
-                                        <form class="forms-sample" method='post'>
-                                            {% csrf_token %}
-                                            {{ form.as_p }}
-                                            {% comment %} {% for field in form %}
-                                                <div class="form-group">
-                                                {{ field.label_tag }}
-                                                {{ field }}
-                                                </div>
-                                            {% endfor %}
-                                            {% if error %}
-                                                <p class = 'error'>{{ error }}</p>
-                                            {% endif %} {% endcomment %}
-                                            <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
-                                        </form> 
-                                            <style>
-                                                .title{
-                                                    text-align: center;
-                                                    font-size : 30px;
-                                                }
-
-                                                .btn-supp{
-                                                    background-color: #4CAF50;
-                                                    color: white;
-                                                    width: 95px;
-                                                    font-size: 14px;
-                                                    text-align: center;
-                                                    border: none;
-                                                    padding: 5px;
-                                                    border-radius: 3px;
-                                                    margin-top: 10px;
-                                                }
-                                                .btn-supp:active{
-                                                    opacity: 0.5;
-                                                }
-                                                label {
-                                                    display: inline;
-                                                    width: 100px;
-                                                    margin-top: 5px;
-                                                    font-size: 15px;
-                                                    font-weight: bold;
-                                                }
-                                                  
-                                                input[type="text"],
-                                                textarea 
-                                                {
-                                                    padding: 5px;
-                                                    border: 1px solid #ccc;
-                                                    border-radius: 3px;
-                                                    width: 300px;
-                                                    margin-top: 5px;
-                                                    font-size: 14px;
-                                                }
-                                            </style>
-                                    </div>
-                                </div>
+                        
+                        {% if user.is_authenticated %}
+                        <div class="card-body">
+                            <caption>Documents publics</caption>
+                            <table id="advanced_table" class="table">
+                                <thead>
+                                    <tr>
+                                        {% comment %} <th>#</th> {% endcomment %}
+                                        <th>Titre</th>
+                                        <th>Description</th>
+                                        {% comment %} <th>Description</th>
+                                        <th>Etat</th>
+                                        <th>Début</th>
+                                        <th>Fin</th>
+                                        <th></th> {% endcomment %}
+                                        <th></th> 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for document in Documents%}
+                                    {% if document.project is None or document.is_public == True %}
+                                    <tr>
+                                        {% comment %} <td>{{ document.id }}</td> {% endcomment %}
+                                        <td>{{ document.title }}</td>
+                                        <td>{{ document.description }}</td>
+                                        {% comment %} <td>{{ document.status }}</td>
+                                        <td>{{ document.start_date }}</td>
+                                        <td>{{ document.end_date }}</td> {% endcomment %}
+                                        <td><a href="{% url 'download_document' document.id %}"><button class='btn-supp'>Télécharger</button></a></td>
+                                        {% comment %} <td><a href="{% url 'delete_task' document.id %}"><button class='btn-supp'>Supprimer</button></a></td> {% endcomment %}
+                                        <style>
+                                            .btn-supp{
+                                                background-color: #4CAF50;
+                                                color: white;
+                                                font-size: 12px;
+                                                border: none;
+                                                padding: 5px;
+                                                border-radius: 3px;
+                                            }
+                                            .btn-supp:active{
+                                                opacity: 0.5;
+                                            }
+                                        </style>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
 
-                        <a href="{% url 'profile' %}"><button class='btn-supp'>Retour au profil</button></a>
+                        <div class="card-body">
+                            <caption>Vos documents privés</caption>
+                            <table id="advanced_table" class="table">
+                                
+                                <thead>
+                                    <tr>
+                                        {% comment %} <th>#</th> {% endcomment %}
+                                        <th>Titre</th>
+                                        <th>Description</th>
+                                        <th>Projet associé</th>
+                                        {% comment %} <th>Etat</th>
+                                        <th>Début</th>
+                                        <th>Fin</th> {% endcomment %}
+                                        <th></th> 
+                                        <th></th> 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for document in Documents%}
+                                    {% if document.project.internship.intern.user.username == user.username and document.is_public == False %}
+                                    <tr>
+                                        {% comment %} <td>{{ document.id }}</td> {% endcomment %}
+                                        <td>{{ document.title }}</td>
+                                        <td>{{ document.description }}</td>
+                                        <td>{{ document.project.title }}</td>
+                                        {% comment %} <td>{{ document.start_date }}</td>
+                                        <td>{{ document.end_date }}</td> {% endcomment %}
+                                        <td><a href="{% url 'download_document' document.id %}"><button class='btn-supp'>Télécharger</button></a></td>
+                                        <td><a href="{% url 'delete_document' document.id %}"><button class='btn-supp'>Supprimer</button></a></td>
+                                        <style>
+                                            .btn-supp{
+                                                background-color: #4CAF50;
+                                                color: white;
+                                                font-size: 12px;
+                                                border: none;
+                                                padding: 5px;
+                                                border-radius: 3px;
+                                            }
+                                            .btn-supp:active{
+                                                opacity: 0.5;
+                                            }
+                                        </style>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+
+                        <a href="{% url 'add_document' %}"><button class="btn btn-primary mr-2">Ajouter un document</button></a>
 
                     </div>
                 </div>

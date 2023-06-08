@@ -1,13 +1,15 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
-from django.views.generic import DetailView, View
-from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
 from django.contrib.auth.models import User
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.views.generic import DetailView, View
+from django.utils.encoding import smart_str
 from django.core.mail import send_mail
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.contrib import messages
+from django.http import HttpResponse
 from .models import *
 from .forms import *
 
@@ -88,6 +90,77 @@ def profile_detail_and_update(request) :
             return redirect('profile')
     
     return render(request, 'intern/App/pages/profile.html', {'Interships' : Interships, 'form' : form})
+
+
+
+@login_required
+def documentlist(request) :
+    
+    Documents = Document.objects.all()
+
+    return render(request, 'intern/App/pages/documents.html', {'Documents' : Documents})
+
+
+
+@login_required
+def uploadDocument(request) : 
+    
+    form = DocumentUploadForm(request.POST, request.FILES)
+    
+    if request.method == 'POST' :
+        
+        # form = DocumentUploadForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+           
+            form.save()
+            return redirect('documents')
+    
+    return render(request, 'intern/App/pages/document_add.html', {'form' : form}) 
+
+
+
+class UploadDocumentView(LoginRequiredMixin, CreateView) :
+
+    template_name = 'intern/App/pages/document_add.html'
+    model = Task
+    form_class = DocumentUploadForm
+    success_url = reverse_lazy('documents')
+    
+    # On definit la methode dispatch, pour pouvoir utiliser l'objet request.
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        return super().dispatch(request, *args, **kwargs)
+    
+    # Pour définir le projet de l'utilisateur dynamiquement.
+    # (Ici, on recupere l'utilisateur et son projet 'En cours').
+    def get_initial(self) :
+        
+        initial = super(UploadDocumentView, self).get_initial()
+        user = self.request.user # On recupere l'utilisateur actuellement connecté.
+        intern = Intern.objects.get(user=user)
+        internships = Intership.objects.filter(intern=intern)
+        
+        for internship in internships :
+            
+            if internship.status == 'En cours' :
+                
+                project = Project.objects.get(internship=internship)
+                initial['project'] = project
+        
+        return initial   
+    
+    # Pour rendre le champ de choix du projet invisible.
+    def get_form(self, form_class=None) :
+        
+        form = super().get_form(form_class)
+        form.fields['project'].widget = forms.HiddenInput(attrs={'hidden':True})
+        form.fields['phase'].widget = forms.HiddenInput(attrs={'hidden':True})
+        form.fields['task'].widget = forms.HiddenInput(attrs={'hidden':True})
+        form.fields['project'].label = ''
+        form.fields['phase'].label = ''
+        form.fields['task'].label = ''
+        return form
 
 
 
@@ -207,6 +280,30 @@ class DetailledProjectView(LoginRequiredMixin, DetailView) :
     
     model = Project
     template_name = 'intern/App/pages/project_detailled.html'
+    
+    
+    
+class DownloadFileView(View) :
+    
+    def get(self, request, pk) :
+        
+        document = get_object_or_404(Document, pk=pk)
+        file_path = document.fichier.path
+        
+        with open(file_path, 'rb') as file :
+            
+            response = HttpResponse(file.read(), content_type='application/force-download')
+            response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(document.fichier.name.split('/')[-1])
+            
+            return response
+        
+        
+        
+class DeleteDocument(LoginRequiredMixin, DeleteView) :
+    
+    template_name = 'intern/App/pages/document_delete.html'
+    model = Document
+    success_url = reverse_lazy('documents')
     
     
     

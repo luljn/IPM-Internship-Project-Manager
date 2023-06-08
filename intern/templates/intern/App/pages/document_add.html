@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>IPM - Change profile photo</title>
+        <title>IPM - Documents</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,6 +20,8 @@
         <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/icon-kit/dist/css/iconkit.min.css' %}">
         <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/perfect-scrollbar/css/perfect-scrollbar.css' %}">
         <link rel="stylesheet" href="{% static 'intern/Decor/dist/css/theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'ckeditor/ckeditor/skins/moono-lisa/editor.css' %}">
+        <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>   
         <script src="{% static 'intern/Decor/src/js/vendor/modernizr-2.8.3.min.js' %}"></script>
     </head>
 
@@ -82,7 +84,7 @@
                                 <div class="nav-item">
                                     <a href="{% url 'tasklist' %}"><i class="ik ik-layers"></i><span>Mes tâches</span></a>
                                 </div>
-                                <div class="nav-item">
+                                <div class="nav-item active">
                                     <a href="{% url 'documents' %}"><i class="ik ik-file-text"></i><span>Documents</span></a>
                                 </div>
                             </nav>
@@ -95,9 +97,9 @@
                             <div class="row align-items-end">
                                 <div class="col-lg-8">
                                     <div class="page-header-title">
-                                        <i class="ik ik-file-text bg-blue"></i>
+                                        <i class="ik ik-server bg-blue"></i>
                                         <div class="d-inline">
-                                            <h5>Modification de photo de profil</h5>
+                                            <h5>Nouveau document</h5>
                                             <span></span>
                                         </div>
                                     </div>
@@ -105,11 +107,11 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="card">
-                                    <div class="card-header"><h3 class='title'>Modifier la photo de profil</h3></div>
+                                    <div class="card-header"><h3>Ajouter un Document</h3></div>
                                     <div class="card-body">
-                                        <form class="forms-sample" method='post'>
+                                        <form class="add-form" method='post' enctype="multipart/form-data">
                                             {% csrf_token %}
                                             {{ form.as_p }}
                                             {% comment %} {% for field in form %}
@@ -122,51 +124,69 @@
                                                 <p class = 'error'>{{ error }}</p>
                                             {% endif %} {% endcomment %}
                                             <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
-                                        </form> 
-                                            <style>
-                                                .title{
-                                                    text-align: center;
-                                                    font-size : 30px;
-                                                }
+                                        </form>
+                                        <style>
+                                            .title{
+                                                text-align: center;
+                                                font-size : 30px;
+                                            }
 
-                                                .btn-supp{
-                                                    background-color: #4CAF50;
-                                                    color: white;
-                                                    width: 95px;
-                                                    font-size: 14px;
-                                                    text-align: center;
-                                                    border: none;
-                                                    padding: 5px;
-                                                    border-radius: 3px;
-                                                    margin-top: 10px;
-                                                }
-                                                .btn-supp:active{
-                                                    opacity: 0.5;
-                                                }
-                                                label {
-                                                    display: inline;
-                                                    width: 100px;
-                                                    margin-top: 5px;
-                                                    font-size: 15px;
-                                                    font-weight: bold;
-                                                }
-                                                  
-                                                input[type="text"],
-                                                textarea 
-                                                {
-                                                    padding: 5px;
-                                                    border: 1px solid #ccc;
-                                                    border-radius: 3px;
-                                                    width: 300px;
-                                                    margin-top: 5px;
-                                                    font-size: 14px;
-                                                }
-                                            </style>
+                                            .btn-supp{
+                                                background-color: #4CAF50;
+                                                color: white;
+                                                width: 95px;
+                                                font-size: 14px;
+                                                text-align: center;
+                                                border: none;
+                                                padding: 5px;
+                                                border-radius: 3px;
+                                                margin-top: 10px;
+                                            }
+                                            .btn-supp:active{
+                                                opacity: 0.5;
+                                            }
+                                              
+                                            input[type="text"],
+                                            textarea 
+                                            {
+                                                padding: 5px;
+                                                border: 1px solid #ccc;
+                                                border-radius: 3px;
+                                                width: 300px;
+                                                margin-top: 5px;
+                                                font-size: 14px;
+                                            }
+
+                                            .add-form p{
+                                                {% comment %} color: #45f3ff; {% endcomment %}
+                                                font-size: 15px;
+                                                font-weight: bold;
+                                                margin-bottom : 5px;
+                                            }
+
+                                            .add-form input{
+                                                width: 100%;
+                                                padding: 5px 5px 5px;
+                                                background: transparent;
+                                                outline: none;
+                                                margin-bottom : 10px;
+                                                font-size: 15px;
+                                            }
+
+                                            .add-form textarea{
+                                                width: 100%;
+                                                padding: 5px 5px 5px;
+                                                background: transparent;
+                                                outline: none;
+                                                margin-bottom : 10px;
+                                                font-size: 15px;
+                                            }
+                                        </style>
                                     </div>
                                 </div>
-                        </div>
+                            </div>
 
-                        <a href="{% url 'profile' %}"><button class='btn-supp'>Retour au profil</button></a>
+                        <a href="{% url 'documents' %}"><button class="btn btn-primary mr-2">Liste des documents</button></a>
 
                     </div>
                 </div>

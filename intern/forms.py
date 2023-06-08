@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from ckeditor.widgets import CKEditorWidget
+from ckeditor.fields import RichTextField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import *
@@ -75,12 +76,12 @@ class AddTaskForm(forms.ModelForm) :
         
         start_date = forms.DateField(required=False)
         end_date = forms.DateField(required=False)
-        description = forms.CharField(widget=CKEditorWidget())
+        description = RichTextField()
         
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),
-            # 'description': CKEditorWidget(),
+            'description': CKEditorWidget(),
         }
         
         
@@ -121,4 +122,13 @@ class UpdatePhotoForm(forms.ModelForm) :
         
         model = Intern
         fields = ['photo']
+        
+        
+class DocumentUploadForm(forms.ModelForm) :
+    
+    class Meta :
+        
+        model = Document
+        fields = ['title', 'description', 'is_public', 'fichier', 'project', 'phase', 'task']
+        # fields = '__all__'
     

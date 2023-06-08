@@ -82,6 +82,9 @@
                                 <div class="nav-item active">
                                     <a href="{% url 'tasklist' %}"><i class="ik ik-layers"></i><span>Mes tâches</span></a>
                                 </div>
+                                <div class="nav-item">
+                                    <a href="{% url 'documents' %}"><i class="ik ik-file-text"></i><span>Documents</span></a>
+                                </div>
                             </nav>
                         </div>
                     </div>
@@ -169,6 +172,7 @@
                         {% endif %}
 
                         <a href="{% url 'add_task' %}"><button class="btn btn-primary mr-2">Ajouter une tâche</button></a>
+                        {% comment %} <a href="{% url 'project_detailled' project.id %}"><button class="btn btn-primary mr-2">Retour au projet</button></a> {% endcomment %}
 
                     </div>
                 </div>

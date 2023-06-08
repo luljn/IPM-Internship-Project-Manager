@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>IPM - Change profile photo</title>
+        <title>IPM - Documents</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -82,7 +82,7 @@
                                 <div class="nav-item">
                                     <a href="{% url 'tasklist' %}"><i class="ik ik-layers"></i><span>Mes tâches</span></a>
                                 </div>
-                                <div class="nav-item">
+                                <div class="nav-item active">
                                     <a href="{% url 'documents' %}"><i class="ik ik-file-text"></i><span>Documents</span></a>
                                 </div>
                             </nav>
@@ -95,10 +95,10 @@
                             <div class="row align-items-end">
                                 <div class="col-lg-8">
                                     <div class="page-header-title">
-                                        <i class="ik ik-file-text bg-blue"></i>
+                                        <i class="ik ik-server bg-blue"></i>
                                         <div class="d-inline">
-                                            <h5>Modification de photo de profil</h5>
-                                            <span></span>
+                                            <h5>Suppression de document</h5>
+                                            <span>{{ object.title }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -107,22 +107,14 @@
 
                         <div class="col-md-6">
                                 <div class="card">
-                                    <div class="card-header"><h3 class='title'>Modifier la photo de profil</h3></div>
+                                    <div class="card-header"><h3 class='title'>Confirmation de suppression du document</h3></div>
                                     <div class="card-body">
                                         <form class="forms-sample" method='post'>
                                             {% csrf_token %}
-                                            {{ form.as_p }}
-                                            {% comment %} {% for field in form %}
-                                                <div class="form-group">
-                                                {{ field.label_tag }}
-                                                {{ field }}
-                                                </div>
-                                            {% endfor %}
-                                            {% if error %}
-                                                <p class = 'error'>{{ error }}</p>
-                                            {% endif %} {% endcomment %}
-                                            <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
-                                        </form> 
+                                            <p class="confirm">Êtes-vous sûr de vouloir supprimer le document "{{ object.title }}" ? Cette action est irréversible.</p>
+                                            <button class="btn-supp">Supprimer</button>
+                                        </form>
+                                        {% comment %} <a href="{% url 'task_detailled' object.id %}"><button class="btn-r">Modifier la tâche</button></a> {% endcomment %}
                                             <style>
                                                 .title{
                                                     text-align: center;
@@ -161,12 +153,28 @@
                                                     margin-top: 5px;
                                                     font-size: 14px;
                                                 }
+
+                                                .confirm{
+                                                    font-size: 20px;
+                                                }
+
+                                                .btn-r{
+                                                    background-color: #4CAF50;
+                                                    color: white;
+                                                    width: 95px;
+                                                    font-size: 14px;
+                                                    text-align: center;
+                                                    border: none;
+                                                    padding: 5px;
+                                                    border-radius: 3px;
+                                                    margin-top: 10px;
+                                                }
                                             </style>
                                     </div>
                                 </div>
                         </div>
 
-                        <a href="{% url 'profile' %}"><button class='btn-supp'>Retour au profil</button></a>
+                        <a href="{% url 'documents' %}"><button class="btn btn-primary mr-2">Liste des documents</button></a>
 
                     </div>
                 </div>
