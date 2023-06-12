@@ -95,7 +95,7 @@
                             <div class="row align-items-end">
                                 <div class="col-lg-8">
                                     <div class="page-header-title">
-                                        <i class="ik ik-file-text bg-blue"></i>
+                                        <i class="ik ik-user dropdown-icon bg-blue"></i>
                                         {% if user.is_authenticated %}
                                         <div class="d-inline">
                                             <h5>Mon Profil</h5>
@@ -142,7 +142,7 @@
                                             <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#me" role="tab" aria-controls="pills-profile" aria-selected="false">Profil</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#informations" role="tab" aria-controls="pills-setting" aria-selected="false">Informations Personnelles</a>
+                                            <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#informations" role="tab" aria-controls="pills-setting" aria-selected="false">Modifier mes informations personnelles</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="pills-tabContent">
@@ -178,8 +178,8 @@
                                                 </div>
                                             </div>
                                             {% if user.is_authenticated %}
-                                            <a href="{% url 'change_password' %}"><button class="btn btn-primary mr-2">Modifier le mot de passe</button></a>
-                                            {% comment %} <a href="{% url 'change_photo' user.intern.id %}"><button class="btn btn-primary mr-2">Modifier la photo de profil</button></a> {% endcomment %}
+                                            <a href="{% url 'change_password' %}"><button class="btn btn-primary mr-2"><i class="ik ik-edit-2"></i>Modifier le mot de passe</button></a>
+                                            <a href="{% url 'change_photo' user.intern.id %}"><button class="btn btn-primary mr-2"><i class="ik ik-user dropdown-icon"></i>Modifier la photo de profil</button></a>
                                             {% endif %}
                                         </div>
                                         
@@ -197,7 +197,7 @@
                                                     {% if error %}
                                                         <p class = 'error'>{{ error }}</p>
                                                     {% endif %}
-                                                    <button class="btn btn-success" type="submit">Enregistrer</button>
+                                                    <button class="btn btn-success" type="submit"><i class="ik ik-clipboard"></i>Enregistrer</button>
                                                 </form>
                                                 <style>
                                                     .update-form label{

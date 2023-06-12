@@ -112,7 +112,7 @@
                                         <form class="forms-sample" method='post'>
                                             {% csrf_token %}
                                             <p class="confirm">Êtes-vous sûr de vouloir supprimer le document "{{ object.title }}" ? Cette action est irréversible.</p>
-                                            <button class="btn-supp">Supprimer</button>
+                                            <button class="btn btn-danger btn-rounded"><i class="ik ik-info"></i>Supprimer</button>
                                         </form>
                                         {% comment %} <a href="{% url 'task_detailled' object.id %}"><button class="btn-r">Modifier la tâche</button></a> {% endcomment %}
                                             <style>

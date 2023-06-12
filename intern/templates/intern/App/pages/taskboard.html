@@ -148,16 +148,18 @@
                                         <td>{{ task.status }}</td>
                                         <td>{{ task.start_date }}</td>
                                         <td>{{ task.end_date }}</td>
-                                        <td><a href="{% url 'task_detailled' task.id %}"><button class='btn-supp'>Modifier</button></a></td>
-                                        <td><a href="{% url 'delete_task' task.id %}"><button class='btn-supp'>Supprimer</button></a></td>
+                                        <td><a href="{% url 'task_detailled' task.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                        <td><a href="{% url 'delete_task' task.id %}"><button class='btn btn-danger btn-rounded'>Supprimer</button></a></td>
                                         <style>
                                             .btn-supp{
                                                 background-color: #4CAF50;
                                                 color: white;
                                                 font-size: 12px;
+                                                font-weight: bold;
                                                 border: none;
                                                 padding: 5px;
                                                 border-radius: 3px;
+                                                width: 100px;
                                             }
                                             .btn-supp:active{
                                                 opacity: 0.5;
@@ -172,7 +174,12 @@
                         {% endif %}
 
                         <a href="{% url 'add_task' %}"><button class="btn btn-primary mr-2">Ajouter une tâche</button></a>
-                        {% comment %} <a href="{% url 'project_detailled' project.id %}"><button class="btn btn-primary mr-2">Retour au projet</button></a> {% endcomment %}
+                        {% for project in Projects %}
+                        {% if  project.internship.intern.user.username == user.username and project.status == 'En cours'%}
+                        <a href="{% url 'project_detailled' project.id %}"><button class="btn btn-primary mr-2">Aller au projet</button></a>       
+                        {% endif %}
+                        {% endfor %}
+                        
 
                     </div>
                 </div>

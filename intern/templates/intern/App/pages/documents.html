@@ -109,7 +109,7 @@
                         
                         {% if user.is_authenticated %}
                         <div class="card-body">
-                            <caption>Documents publics</caption>
+                            <caption class="caption">Documents publics</caption>
                             <table id="advanced_table" class="table">
                                 <thead>
                                     <tr>
@@ -157,7 +157,7 @@
                         </div>
 
                         <div class="card-body">
-                            <caption>Vos documents privés</caption>
+                            <caption class="caption">Vos documents privés</caption>
                             <table id="advanced_table" class="table">
                                 
                                 <thead>
@@ -184,18 +184,25 @@
                                         {% comment %} <td>{{ document.start_date }}</td>
                                         <td>{{ document.end_date }}</td> {% endcomment %}
                                         <td><a href="{% url 'download_document' document.id %}"><button class='btn-supp'>Télécharger</button></a></td>
-                                        <td><a href="{% url 'delete_document' document.id %}"><button class='btn-supp'>Supprimer</button></a></td>
+                                        <td><a href="{% url 'delete_document' document.id %}"><button class='btn btn-danger btn-rounded'>Supprimer</button></a></td>
                                         <style>
                                             .btn-supp{
                                                 background-color: #4CAF50;
                                                 color: white;
-                                                font-size: 12px;
+                                                font-size: 13px;
                                                 border: none;
                                                 padding: 5px;
                                                 border-radius: 3px;
+                                                width: 105px;
                                             }
                                             .btn-supp:active{
                                                 opacity: 0.5;
+                                            }
+
+                                            .card-body caption{
+                                                font-size: 150px;
+                                                font-weight: bold;
+                                                text-align: center; 
                                             }
                                         </style>
                                     </tr>
@@ -206,7 +213,7 @@
                         </div>
                         {% endif %}
 
-                        <a href="{% url 'add_document' %}"><button class="btn btn-primary mr-2">Ajouter un document</button></a>
+                        <a href="{% url 'add_document' %}"><button class="btn btn-primary mr-2"><i class="ik ik-share"></i>Ajouter un document</button></a>
 
                     </div>
                 </div>

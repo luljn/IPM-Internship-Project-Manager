@@ -308,7 +308,7 @@ class DeleteDocument(LoginRequiredMixin, DeleteView) :
     
     
 def send_welcome_email(request):
-    from django.contrib import messages
+    
 
     user_id = request.GET.get('user_id', '')
     user = User.objects.get(pk=user_id)

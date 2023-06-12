@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>IPM - My Project</title>
+        <title>IPM - My Projects</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -59,7 +59,7 @@
             <div class="page-wrap">
                 <div class="app-sidebar colored">
                     <div class="sidebar-header">
-                        <a class="header-brand" href="index.html">
+                        <a class="header-brand" href="{% url 'home' %}">
                             <div class="logo-img">
                                <img src="" class="header-brand-img" alt=""> 
                             </div>
@@ -137,19 +137,21 @@
                                         <td>{{ project.start_date }}</td>
                                         <td>{{ project.end_date }}</td>
                                         {% if project.status == 'En cours' %}
-                                        <td><a href="{% url 'update_project' project.id %}"><button class='btn-modify'>Modifier</button></a></td>
-                                        <td><a href="{% url 'project_detailled' project.id %}"><button class='btn-modify'>Consulter</button></a></td>
+                                        <td><a href="{% url 'update_project' project.id %}"><button class='btn-modify'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                        <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
                                         {% else %}
-                                        <td><a href="{% url 'project_detailled' project.id %}"><button class='btn-modify'>Consulter</button></a></td>
+                                        <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
                                         {% endif %}
                                         <style>
                                             .btn-modify{
                                                 background-color: #4CAF50;
                                                 color: white;
                                                 font-size: 12px;
+                                                font-weight: bold;
                                                 border: none;
                                                 padding: 5px;
                                                 border-radius: 3px;
+                                                width: 90px;
                                             }
                                            
                                             .btn-modify:active{

@@ -157,7 +157,7 @@ class Project(models.Model) :
     )
     
     title = models.CharField(max_length=500, verbose_name="titre")
-    description = models.TextField(blank=True, null=True, verbose_name="description")
+    description =  models.TextField(blank=True, null=True, verbose_name="description")
     duration = models.IntegerField(null=True, blank=True, verbose_name="durée du projet(en semaines)")
     start_date = models.DateField(null=True, blank=True, verbose_name="date de début")
     end_date = models.DateField(null=True, blank=True, verbose_name="date de fin")
