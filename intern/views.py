@@ -59,7 +59,7 @@ def project(request) :
 def tasklist(request) :
     
     Projects = Project.objects.all()
-    Tasks = Task.objects.all()
+    Tasks = Task.objects.order_by('status', 'start_date')
 
     return render(request, 'intern/App/pages/taskboard.html', {'Projects' : Projects,'Tasks' : Tasks})
 
@@ -69,7 +69,7 @@ def tasklist(request) :
 def tasklistEnded(request, id) :
     
     project = Project.objects.get(id=id)
-    Tasks = Task.objects.filter(project=project)
+    Tasks = Task.objects.filter(project=project).order_by('status', 'start_date')
 
     return render(request, 'intern/App/pages/taskboardEnded.html', {'project' : project,'Tasks' : Tasks})
 
@@ -96,7 +96,7 @@ def profile_detail_and_update(request) :
 @login_required
 def documentlist(request) :
     
-    Documents = Document.objects.all()
+    Documents = Document.objects.order_by('title')
 
     return render(request, 'intern/App/pages/documents.html', {'Documents' : Documents})
 
