@@ -40,8 +40,78 @@ class CustomLoginView(LoginView) :
 
 @login_required
 def home(request) :
-
-    return render(request, 'intern/App/index.html')
+    
+    user = request.user
+    intern = Intern.objects.get(user=user)
+    internship = Intership.objects.get(intern=intern, status='En cours')
+    project = Project.objects.filter(internship=internship, status='En cours')
+    Tasks = Task.objects.all()
+    internships = intern.intership_set.all()
+    
+    data = [] # Les données pour le graphe 'Tâches'.
+    data_1 = [] # Les données pour le graphe 'Projets'.
+    
+    Annule = []
+    EnAttente = []
+    EnCours = []
+    Termine = []
+    
+    P_Annule = []
+    P_EnAttente = []
+    P_EnCours = []
+    P_Termine = []
+    
+    for task in Tasks : 
+        
+        if task.status == 'Annulé' and task.project.internship == internship : 
+            
+            Annule.append(task)
+            
+        elif task.status == 'En attente' and task.project.internship == internship : 
+            
+            EnAttente.append(task)
+            
+        elif task.status == 'En cours' and task.project.internship == internship : 
+            
+            EnCours.append(task)
+            
+        elif task.status == 'Terminé' and task.project.internship == internship : 
+            
+            Termine.append(task)
+        
+    data.append(len(Annule))
+    data.append(len(EnAttente))
+    data.append(len(EnCours))
+    data.append(len(Termine))
+    
+    for internship in internships : 
+        
+        project = internship.project_set.all()
+        
+        for project in project : 
+        
+            if project.status == 'Annulé' : 
+                
+                P_Annule.append(project)
+                
+            elif project.status == 'En attente' : 
+                
+                P_EnAttente.append(project)
+                
+            elif project.status == 'En cours' : 
+                
+                P_EnCours.append(project)
+                
+            elif project.status == 'Terminé' : 
+                
+                P_Termine.append(project)
+    
+    data_1.append(len(P_Annule))
+    data_1.append(len(P_EnAttente))
+    data_1.append(len(P_EnCours))
+    data_1.append(len(P_Termine))
+    
+    return render(request, 'intern/App/index.html', {'data' : data, 'data_1' : data_1})
 
 
 
@@ -320,7 +390,7 @@ def send_welcome_email(request):
         message += '\n les projets de stage chez ICCSOFT. Vos identfiants de connexion sont : '
         message += f'\n Nom d\'utisateur : {user.username} \n Mot de passe : S3cret1234! '
         message += '\n l\'application est disponible sur : localhost:8000/ '
-        message += 'Vous pouvez changez vos informations personnelles sur la page correspondant à votre profil.'
+        message += '\nVous pouvez changez vos informations personnelles et votre mot de passe sur la page correspondant à votre profil.'
         message += '\n Nous vous souhaitons une bonne période de stage.'
         from_email = 'mbohlulajonathan4@gmail.com' 
         recipient_list = [user.email]

@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="{% static 'intern/Decor/node_modules/owl.carousel/dist/assets/owl.theme.default.css' %}">
         <link rel="stylesheet" href="{% static 'intern/Decor/dist/css/theme.min.css' %}">
         <script src="{% static 'intern/Decor/src/js/vendor/modernizr-2.8.3.min.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
 
     <body>
@@ -56,6 +57,8 @@
                                 <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {% if user.is_authenticated %}
                                     <img class="avatar" src="{{ user.intern.photo.url }}" alt="photo de profil"></a>
+                                    {% elif user.is_superuser %}
+                                    <img class="avatar" src="{{ user.tutor.photo.url }}" alt="photo de profil"></a>
                                     {% endif %}
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                     <a class="dropdown-item" href="{% url 'profile' %}"><i class="ik ik-user dropdown-icon"></i> Mon Profil</a>
@@ -119,37 +122,138 @@
                             </div>
                         </div>
 
+                        <h1>Voici les statistiques de votre projet en cours.</h1>
+                        
                         <div class="row">
-                            <div class="col-md-12 col-lg-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3>Categories chart</h3>
-                                    </div>
-                                    <div class="card-block">
-                                        <div id="placeholder" class="demo-placeholder" style="height:400px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-lg-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3>Pie chart ( without legend )</h3>
-                                    </div>
-                                    <div class="card-block">
-                                        <div id="placeholder2" class="demo-placeholder" style="height: 400px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-lg-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3>Image plots</h3>
-                                    </div>
-                                    <div class="card-block">
-                                        <div id="placeholder3" class="demo-placeholder" style="height:400px;"></div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% comment %} {% if user.is_superuser %}
+                            <canvas id="myChart"></canvas>
+                            {% endif %} {% endcomment %}
+
+                            <script>
+                                // Graphique 1.
+                                // Récupérer le canvas
+                                var ctx = document.getElementById('myChart').getContext('2d');
+
+                                // Créer le graphique
+                                var myChart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+                                        datasets: [{
+                                            label: 'Nombres de Stages en 2023',
+                                            data: [4, 6, 3, 5, 2, 3, 4, 5, 3, 2, 1, 6],
+                                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                            borderColor: 'rgba(255, 99, 132, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
+                                            }]
+                                        }
+                                    }
+                                });
+                            </script>
+
+                            {% comment %} <canvas id="Tâches"></canvas> {% endcomment %}
+                                
+                            <script>
+                                // Graphique 2.
+                                var ctx_1 = document.getElementById('Tâches').getContext('2d');
+
+                                // Créer le graphique
+                                var myChart_1 = new Chart(ctx_1, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: ['2 - 5 Mai', '8 - 12 Mai', '15 - 19 Mai', '22 - 26 Mai', '29 Mai - 2 Juin', '5 - 9 Juin', '12 - 16 Juin', '19 - 23 Juin'],
+                                        datasets: [{
+                                            label: 'Tâches planifiées',
+                                            data: [1, 2, 3, 2, 1, 3, 4, 1],
+                                            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                                            borderColor: 'rgba(76, 175, 80, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
+                                            }]
+                                        }
+                                    }
+                                });
+                            </script>
+
+                            <canvas id="Visualisation_taches"></canvas>
+                                
+                            <script>
+                                // Graphique 3.
+                                var ctx_2 = document.getElementById('Visualisation_taches').getContext('2d');
+
+                                // Créer le graphique
+                                var myChart_2 = new Chart(ctx_2, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: ['Tâches annulées', 'Tâches en attente', 'Tâches en cours', 'Tâches terminées'],
+                                        datasets: [{
+                                            label: 'Tâches',
+                                            data: {{ data|safe }},
+                                            backgroundColor: 'rgba(69, 243, 255, 0.2)',
+                                            borderColor: 'rgba(69, 243, 255, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
+                                            }]
+                                        }
+                                    }
+                                });
+                            </script>
+
+                            <h1>Voici les statistiques de vos projets.</h1>
+                            <canvas id="Visualisation_projets"></canvas>
+                            
+                            <script>
+                                // Graphique 4.
+                                var ctx_3 = document.getElementById('Visualisation_projets').getContext('2d');
+
+                                // Créer le graphique
+                                var myChart_3 = new Chart(ctx_3, {
+                                    type: 'line',
+                                    data: {
+                                        labels: ['Projets annulés', 'Projets en attente', 'Projets en cours', 'Projets terminées'],
+                                        datasets: [{
+                                            label: 'Projets',
+                                            data: {{ data_1|safe }},
+                                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                            borderColor: 'rgba(255, 99, 132, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
+                                            }]
+                                        }
+                                    }
+                                });
+                            </script>
+
+
                         </div>
 
                     </div>

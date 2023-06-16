@@ -157,7 +157,7 @@ class Project(models.Model) :
     )
     
     title = models.CharField(max_length=500, verbose_name="titre")
-    description =  models.TextField(blank=True, null=True, verbose_name="description")
+    description =  RichTextField(blank=True, null=True, verbose_name="description")
     duration = models.IntegerField(null=True, blank=True, verbose_name="durée du projet(en semaines)")
     start_date = models.DateField(null=True, blank=True, verbose_name="date de début")
     end_date = models.DateField(null=True, blank=True, verbose_name="date de fin")
@@ -191,7 +191,7 @@ class Task(models.Model) :
     
     title = models.CharField(max_length=500, verbose_name="titre")
     duration = models.IntegerField(null=True, blank=True, verbose_name="durée de la tâche(en jours)")
-    description = models.TextField(blank=True, null=True, verbose_name="description")
+    description = RichTextField(blank=True, null=True, verbose_name="description")
     start_date = models.DateField(null=True, blank=True, verbose_name="date de début")
     end_date = models.DateField(null=True, blank=True, verbose_name="date de fin")
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name="etat")
@@ -223,7 +223,7 @@ class Phase(models.Model) :
     )
     
     title = models.CharField(max_length=500, verbose_name="titre")
-    description = models.TextField(blank=True, null=True, verbose_name="description")
+    description = RichTextField(blank=True, null=True, verbose_name="description")
     duration = models.IntegerField(null=True, blank=True, verbose_name="durée de la phase(en jours)")
     start_date = models.DateField(null=True, blank=True, verbose_name="date de début")
     end_date = models.DateField(null=True, blank=True, verbose_name="date de fin")
@@ -244,7 +244,7 @@ class Phase(models.Model) :
 class Document(models.Model) :
     
     title = models.CharField(max_length=500, verbose_name="titre")
-    description = models.TextField(null=True, blank=True, verbose_name="description")
+    description = RichTextField(null=True, blank=True, verbose_name="description")
     is_public = models.BooleanField(default=False, verbose_name="Autorisation de partage")
     fichier = models.FileField(upload_to='documents/')
     project = models.ForeignKey(Project, null=True, blank=True, on_delete=models.SET_NULL)

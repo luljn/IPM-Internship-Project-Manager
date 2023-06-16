@@ -95,7 +95,7 @@
                             <div class="row align-items-end">
                                 <div class="col-lg-8">
                                     <div class="page-header-title">
-                                        <i class="ik ik-server bg-blue"></i>
+                                        <i class="ik ik-layers bg-blue"></i>
                                         <div class="d-inline">
                                             <h5>Modification de tâche</h5>
                                             <span>{{ object.title }}</span>
@@ -105,12 +105,13 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                                <div class="card">
+                        <div class="container-card">
+                                <div class="card-1">
                                     <div class="card-header"><h3 class='title'>Modifier la tâche</h3></div>
                                     <div class="card-body">
                                         <form class="update-form" method='post'>
                                             {% csrf_token %}
+                                            {{ form.media }}
                                             {{ form.as_p }}
                                             {% comment %} {% for field in form %}
                                                 <div class="form-group">
@@ -171,6 +172,30 @@
                                                     outline: none;
                                                     margin-bottom : 10px;
                                                     font-size: 15px;
+                                                }
+
+                                                .card-1{
+                                                    margin-bottom: 30px;
+                                                    border: 1px solid #000;
+                                                    box-shadow: 0 0 10px 5px #888;
+                                                    width: 100%;
+                                                }
+    
+                                                .card-1 h2{
+                                                    font-weight: bold;
+                                                    margin-left: 10px;
+                                                }
+    
+                                                .card-1 p{
+                                                    font-size: 20px;
+                                                    margin-left: 20px;
+                                                }
+    
+                                                .container-card{
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                    justify-content: center;
+                                                    align-items: center;
                                                 }
                                             </style>
                                     </div>
