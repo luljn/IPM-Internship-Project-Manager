@@ -36,9 +36,9 @@
                             <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
                             <div class="header-search">
                                 <div class="input-group">
-                                    <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
-                                    <input type="text" class="form-control">
-                                    <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>
+                                    {% comment %} <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
+                                    <input type="text" class="form-control"> {% endcomment %}
+                                    <a href="{% url 'search' %}"><span class="input-group-addon search-btn"><i class="ik ik-search"></i></span></a>
                                 </div>
                             </div>
                             <button type="button" id="navbar-fullscreen" class="nav-link"><i class="ik ik-maximize"></i></button>
@@ -95,7 +95,7 @@
                             <div class="row align-items-end">
                                 <div class="col-lg-8">
                                     <div class="page-header-title">
-                                        <i class="ik ik-server bg-blue"></i>
+                                        <i class="ik ik-layers bg-blue"></i>
                                         <div class="d-inline">
                                             <h5>Suppression de tâche</h5>
                                             <span>{{ Tasks.title }}</span>
@@ -114,7 +114,7 @@
                                             <p class="confirm">Êtes-vous sûr de vouloir supprimer la tâche "{{ object.title }}" ? Cette action est irréversible.</p>
                                             <button class="btn btn-danger btn-rounded"><i class="ik ik-info"></i>Supprimer</button>
                                         </form>
-                                        <a href="{% url 'task_detailled' object.id %}"><button class="btn-r">Modifier la tâche</button></a>
+                                        <a href="{% url 'task_detailled' object.id %}"><button class="btn-r"><i class="ik ik-edit-2"></i>Modifier la tâche</button></a>
                                             <style>
                                                 .title{
                                                     text-align: center;
@@ -161,7 +161,7 @@
                                                 .btn-r{
                                                     background-color: #4CAF50;
                                                     color: white;
-                                                    width: 120px;
+                                                    width: 150px;
                                                     font-size: 14px;
                                                     text-align: center;
                                                     border: none;
@@ -174,7 +174,7 @@
                                 </div>
                         </div>
 
-                        <a href="{% url 'tasklist' %}"><button class="btn btn-primary mr-2">Liste des tâches</button></a>
+                        <a href="{% url 'tasklist' %}"><button class="btn btn-primary mr-2"><i class="ik ik-layers"></i>Liste des tâches</button></a>
 
                     </div>
                 </div>

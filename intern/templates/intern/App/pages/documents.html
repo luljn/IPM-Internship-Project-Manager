@@ -36,9 +36,9 @@
                             <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
                             <div class="header-search">
                                 <div class="input-group">
-                                    <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
-                                    <input type="text" class="form-control">
-                                    <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>
+                                    {% comment %} <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
+                                    <input type="text" class="form-control"> {% endcomment %}
+                                    <a href="{% url 'search' %}"><span class="input-group-addon search-btn"><i class="ik ik-search"></i></span></a>
                                 </div>
                             </div>
                             <button type="button" id="navbar-fullscreen" class="nav-link"><i class="ik ik-maximize"></i></button>
@@ -108,118 +108,103 @@
                         </div>
                         
                         {% if user.is_authenticated %}
-                        <div class="card-body">
-                            <h3 class="title">Documents publics</h3>
-                            <table id="advanced_table" class="table">
-                                <thead>
-                                    <tr>
-                                        {% comment %} <th>#</th> {% endcomment %}
-                                        <th>Titre</th>
-                                        <th>Description</th>
-                                        {% comment %} <th>Description</th>
-                                        <th>Etat</th>
-                                        <th>Début</th>
-                                        <th>Fin</th>
-                                        <th></th> {% endcomment %}
-                                        <th></th> 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for document in Documents%}
-                                    {% if document.project is None or document.is_public == True %}
-                                    <tr>
-                                        {% if document.project is not None and document.project.internship.intern.user.username == user.username %}
-                                        <td><a href="{% url 'document_update' document.id %}">{{ document.title }}</a></td>
-                                        {% else %}
-                                        <td>{{ document.title }}</td>
-                                        {% endif %}
-                                        <td>{{ document.description }}</td>
-                                        {% comment %} <td>{{ document.status }}</td>
-                                        <td>{{ document.start_date }}</td>
-                                        <td>{{ document.end_date }}</td> {% endcomment %}
-                                        <td><a href="{% url 'download_document' document.id %}"><button class='btn-supp'>Télécharger</button></a></td>
-                                        {% comment %} <td><a href="{% url 'delete_task' document.id %}"><button class='btn-supp'>Supprimer</button></a></td> {% endcomment %}
-                                        <style>
-                                            .btn-supp{
-                                                background-color: #4CAF50;
-                                                color: white;
-                                                font-size: 12px;
-                                                border: none;
-                                                padding: 5px;
-                                                border-radius: 3px;
-                                            }
-                                            .btn-supp:active{
-                                                opacity: 0.5;
-                                            }
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header d-block">
+                                        <h3>Documents publics</h3>
+                                    </div>
+                                    <div class="card-body p-0 table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Titre</th>
+                                                        <th>Description</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for document in Documents%}
+                                                    {% if document.project is None or document.is_public == True %}
+                                                    <tr>
+                                                        {% if document.project is not None and document.project.internship.intern.user.username == user.username %}
+                                                        <td><a href="{% url 'document_update' document.id %}">{{ document.title }}</a></td>
+                                                        {% else %}
+                                                        <td>{{ document.title }}</td>
+                                                        {% endif %}
+                                                        <td>{{ document.description }}</td>
+                                                        <td><a href="{% url 'download_document' document.id %}"><button class='btn-supp'>Télécharger</button></a></td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                            .title{
-                                                font-size: 25px;
-                                                font-weight: bold;
-                                                text-align: center; 
-                                            }
-                                        </style>
-                                    </tr>
-                                    {% endif %}
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                                <div class="card">
+                                    <div class="card-header d-block">
+                                        <h3>Mes documents privés</h3>
+                                    </div>
+                                    <div class="card-body p-0 table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Titre</th>
+                                                        <th>Description</th>
+                                                        <th>Projet associé</th>
+                                                        <th>Tâche associée</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for document in Documents%}
+                                                    {% if document.project.internship.intern.user.username == user.username and document.is_public == False %}
+                                                    <tr>
+                                                        {% comment %} <td>{{ document.id }}</td> {% endcomment %}
+                                                        <td><a href="{% url 'document_update' document.id %}">{{ document.title }}</a></td>
+                                                        <td>{{ document.description }}</td>
+                                                        <td>{{ document.project.title }}</td>
+                                                        <td>{{ document.task.title }}</td>
+                                                        {% comment %} <td>{{ document.end_date }}</td> {% endcomment %}
+                                                        <td><a href="{% url 'download_document' document.id %}"><button class='btn-supp'>Télécharger</button></a></td>
+                                                        <td><a href="{% url 'delete_document' document.id %}"><button class='btn btn-danger btn-rounded'>Supprimer</button></a></td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <style>
+                                                .btn-supp{
+                                                    background-color: #4CAF50;
+                                                    color: white;
+                                                    font-size: 13px;
+                                                    border: none;
+                                                    padding: 5px;
+                                                    border-radius: 3px;
+                                                    width: 105px;
+                                                }
+                                                .btn-supp:active{
+                                                    opacity: 0.5;
+                                                }
+    
+                                                .title{
+                                                    font-size: 25px;
+                                                    font-weight: bold;
+                                                    text-align: center; 
+                                                }
+                                            </style>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="card-body">
-                            <h3 class="title">Vos documents privés</h3>
-                            <table id="advanced_table" class="table">
-                                
-                                <thead>
-                                    <tr>
-                                        {% comment %} <th>#</th> {% endcomment %}
-                                        <th>Titre</th>
-                                        <th>Description</th>
-                                        <th>Projet associé</th>
-                                        <th>Tâche associée</th>
-                                        {% comment %} <th>Début</th>
-                                        <th>Fin</th> {% endcomment %}
-                                        <th></th> 
-                                        <th></th> 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for document in Documents%}
-                                    {% if document.project.internship.intern.user.username == user.username and document.is_public == False %}
-                                    <tr>
-                                        {% comment %} <td>{{ document.id }}</td> {% endcomment %}
-                                        <td><a href="{% url 'document_update' document.id %}">{{ document.title }}</a></td>
-                                        <td>{{ document.description }}</td>
-                                        <td>{{ document.project.title }}</td>
-                                        <td>{{ document.task.title }}</td>
-                                        {% comment %} <td>{{ document.end_date }}</td> {% endcomment %}
-                                        <td><a href="{% url 'download_document' document.id %}"><button class='btn-supp'>Télécharger</button></a></td>
-                                        <td><a href="{% url 'delete_document' document.id %}"><button class='btn btn-danger btn-rounded'>Supprimer</button></a></td>
-                                        <style>
-                                            .btn-supp{
-                                                background-color: #4CAF50;
-                                                color: white;
-                                                font-size: 13px;
-                                                border: none;
-                                                padding: 5px;
-                                                border-radius: 3px;
-                                                width: 105px;
-                                            }
-                                            .btn-supp:active{
-                                                opacity: 0.5;
-                                            }
-
-                                            .title{
-                                                font-size: 25px;
-                                                font-weight: bold;
-                                                text-align: center; 
-                                            }
-                                        </style>
-                                    </tr>
-                                    {% endif %}
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
                         {% endif %}
 
                         <a href="{% url 'add_document' %}"><button class="btn btn-primary mr-2"><i class="ik ik-share"></i>Ajouter un document au projet</button></a>

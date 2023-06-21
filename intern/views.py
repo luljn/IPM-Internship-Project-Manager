@@ -344,6 +344,14 @@ class DetailledTaskView(LoginRequiredMixin, UpdateView) :
     form_class = UpdateTaskForm
     success_url = reverse_lazy('tasklist')
     
+    def get_context_data(self, **kwargs) :
+        
+        context = super().get_context_data(**kwargs)
+        Documents = Document.objects.all()
+        my_dict = {'Documents': Documents}
+        context.update(my_dict)
+        return context
+    
     
     
 class AddTaskView(LoginRequiredMixin, CreateView) :
@@ -443,6 +451,46 @@ class DeleteDocument(LoginRequiredMixin, DeleteView) :
     template_name = 'intern/App/pages/document_delete.html'
     model = Document
     success_url = reverse_lazy('documents')
+    
+    
+    
+class SearchView(View) :
+    
+    def get(self, request) :
+        
+        query = request.GET.get('q')
+        results = []
+        results_projects = []
+        results_tasks = []
+        results_docs = []
+        
+        if query :
+            
+            # Effectuer la recherche dans les différents modèles
+            model1_results = Project.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
+            model2_results = Task.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
+            model3_results = Document.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
+            # Ajouter les résultats de chaque modèle à la liste des résultats
+            results.extend(list(model1_results))
+            results.extend(list(model2_results))
+            results.extend(list(model3_results))
+            
+            # On trie les résultats de la recherche en foncftions des instances.
+            for result in results : 
+                
+                if isinstance(result, Project) :
+                    
+                    results_projects.append(result)
+                    
+                elif isinstance(result, Task) :
+                    
+                    results_tasks.append(result)
+                    
+                if isinstance(result, Document) :
+                    
+                    results_docs.append(result)
+            
+        return render(request, 'intern/App/pages/search.html', {'results_projects' : results_projects, 'results_tasks' : results_tasks, 'results_docs' : results_docs, 'results': results, 'query': query})
     
     
     

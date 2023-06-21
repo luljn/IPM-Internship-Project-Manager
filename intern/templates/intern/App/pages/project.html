@@ -36,9 +36,9 @@
                             <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
                             <div class="header-search">
                                 <div class="input-group">
-                                    <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
-                                    <input type="text" class="form-control">
-                                    <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>
+                                    {% comment %} <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
+                                    <input type="text" class="form-control"> {% endcomment %}
+                                    <a href="{% url 'search' %}"><span class="input-group-addon search-btn"><i class="ik ik-search"></i></span></a>
                                 </div>
                             </div>
                             <button type="button" id="navbar-fullscreen" class="nav-link"><i class="ik ik-maximize"></i></button>
@@ -107,41 +107,47 @@
                     </div>
 
                     {% if user.is_authenticated %}
-                        <div class="card-body">
-
-                            {% comment %} {% for project in Projects %}
-                            {% if project.internship.intern.user.username == user.username %} {% endcomment %}
-                            
-                            <table id="advanced_table" class="table">
-                                {% comment %} <caption>{{ project.title }}</caption> {% endcomment %}
-                                <thead>
-                                    <tr>
-                                        <th>Projet</th>
-                                        <th>Description</th>
-                                        <th>Etat</th>
-                                        <th>Début</th>
-                                        <th>Fin</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for project in Projects %}
-                                    {% if project.internship.intern.user.username == user.username %}
-                                    <tr>
-                                        <td>{{ project.title }}</td>
-                                        <td>{{ project.description }}</td>
-                                        <td>{{ project.status }}</td>
-                                        <td>{{ project.start_date }}</td>
-                                        <td>{{ project.end_date }}</td>
-                                        {% if project.status == 'En cours' %}
-                                            <td><a href="{% url 'update_project' project.id %}"><button class='btn-modify'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
-                                            <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
-                                        {% else %}
-                                            <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
-                                        {% endif %}
-                                        
-                                        <style>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header d-block">
+                                        <h3>Mes Projets</h3>
+                                    </div>
+                                    <div class="card-body p-0 table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Titre</th>
+                                                        <th>Description</th>
+                                                        <th>Etat</th>
+                                                        <th>Début</th>
+                                                        <th>Fin</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for project in Projects %}
+                                                    {% if project.internship.intern.user.username == user.username %}
+                                                    <tr>
+                                                        <td>{{ project.title }}</td>
+                                                        <td>{{ project.description }}</td>
+                                                        <td>{{ project.status }}</td>
+                                                        <td>{{ project.start_date }}</td>
+                                                        <td>{{ project.end_date }}</td>
+                                                        {% if project.status == 'En cours' %}
+                                                            <td><a href="{% url 'update_project' project.id %}"><button class='btn-modify'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                                            <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
+                                                        {% else %}
+                                                            <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
+                                                        {% endif %}
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <style>
                                                 .btn-modify{
                                                     background-color: #4CAF50;
                                                     color: white;
@@ -181,23 +187,19 @@
                                                     align-items: center;
                                                 }
                                         </style>
-                                    </tr>
-                                    {% endif %}
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            
                         </div>
                         {% endif %}
-
-                        <footer class="footer">
-                            <div class="w-100 clearfix">
-                                <span class="text-center text-sm-left d-md-inline-block">Copyright © 2023 ICCSOFT SA - Internship Project Manager All Rights Reserved.</span>
-                            </div>
-                        </footer>
-                    
                 </div>
+
+                <footer class="footer">
+                    <div class="w-100 clearfix">
+                        <span class="text-center text-sm-left d-md-inline-block">Copyright © 2023 ICCSOFT SA - Internship Project Manager All Rights Reserved.</span>
+                    </div>
+                </footer>
             </div>
         </div>
         

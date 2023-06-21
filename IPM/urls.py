@@ -71,7 +71,7 @@ urlpatterns = [
     # page de téléchargement de la liste des tâches du projet 'En cours' en fichier excel.
     path('export_to_excel_current_project/', intern.views.export_to_excel_current_project, name='export_to_excel_current_project'),
     # url pour la recherche.
-    path('search/', intern.views.search, name='search')
+    path('search/', intern.views.SearchView.as_view(), name='search')
 ]
 
 handler404 = 'intern.views.error404'

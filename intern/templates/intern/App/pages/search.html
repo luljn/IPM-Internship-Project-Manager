@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>IPM - Home</title>
+        <title>IPM - Search</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -206,16 +206,157 @@
                                 </div>
                             </div>
 
+                            {% if user.is_authenticated %}
                             {% if results %}
                                 <h2>Résultats de la recherche pour "{{ query }}" :</h2>
-                                <ul>
-                                    {% for item in results %}
-                                        <a href="{% url 'project_detailled' item.id %}"><li>{{ item.title }}</li></a>
-                                        <p>{{ item.description }}</p>
-                                    {% endfor %}
-                                </ul>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header d-block">
+                                                <h3>Projet(s)</h3>
+                                            </div>
+                                            <div class="card-body p-0 table-border-style">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Titre</th>
+                                                                <th>Description</th>
+                                                                <th>Etat</th>
+                                                                <th>Début</th>
+                                                                <th>Fin</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for project in results_projects %}
+                                                            {% if project.internship.intern.user.username == user.username %}
+                                                            <tr>
+                                                                <td>{{ project.title }}</td>
+                                                                <td>{{ project.description }}</td>
+                                                                <td>{{ project.status }}</td>
+                                                                <td>{{ project.start_date }}</td>
+                                                                <td>{{ project.end_date }}</td>
+                                                                <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
+                                                            </tr>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="card">
+                                            <div class="card-header d-block">
+                                                <h3>Tâche(s)</h3>
+                                            </div>
+                                            <div class="card-body p-0 table-border-style">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Titre</th>
+                                                                <th>Description</th>
+                                                                <th>Etat</th>
+                                                                <th>Début</th>
+                                                                <th>Fin</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for task in results_tasks %}
+                                                            {% if task.project.internship.intern.user.username == user.username %}
+                                                            <tr>
+                                                                <td>{{ task.title }}</td>
+                                                                <td>{{ task.description }}</td>
+                                                                <td>{{ task.status }}</td>
+                                                                <td>{{ task.start_date }}</td>
+                                                                <td>{{ task.end_date }}</td>
+                                                                {% if task.project.status == 'En cours' %}
+                                                                <td><a href="{% url 'task_detailled' task.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                                                {% endif %}
+                                                                <style>
+                                                                    .btn-supp{
+                                                                        background-color: #4CAF50;
+                                                                        color: white;
+                                                                        font-size: 12px;
+                                                                        font-weight: bold;
+                                                                        border: none;
+                                                                        padding: 5px;
+                                                                        border-radius: 3px;
+                                                                        width: 100px;
+                                                                    }
+                                                                    .btn-supp:active{
+                                                                        opacity: 0.5;
+                                                                    }
+                                                                </style>
+                                                            </tr>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="card">
+                                            <div class="card-header d-block">
+                                                <h3>Document(s)</h3>
+                                            </div>
+                                            <div class="card-body p-0 table-border-style">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Titre</th>
+                                                                <th>Description</th>
+                                                                <th>Projet associé</th>
+                                                                <th>Tâche associée</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for document in results_docs %}
+                                                            <tr>
+                                                                <td>{{ document.title }}</td>
+                                                                <td>{{ document.description }}</td>
+                                                                <td>{{ document.project.title }}</td>
+                                                                <td>{{ document.task.title }}</td>
+                                                                {% if document.project.internship.intern.user.username == user.username and document.is_public == False %}
+                                                                    <td><a href="{% url 'document_update' document.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                                                {% elif document.project is not None and document.project.internship.intern.user.username == user.username %}
+                                                                    <td><a href="{% url 'document_update' document.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                                                {% comment %} {% elif document.project is None or document.is_public == True %} {% endcomment %}
+                                                                {% endif %}
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    <style>
+                                                        .btn-supp{
+                                                            background-color: #4CAF50;
+                                                            color: white;
+                                                            font-size: 12px;
+                                                            font-weight: bold;
+                                                            border: none;
+                                                            padding: 5px;
+                                                            border-radius: 3px;
+                                                            width: 100px;
+                                                        }
+                                                        .btn-supp:active{
+                                                            opacity: 0.5;
+                                                        }
+                                                    </style>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             {% else %}
                                 <h2>Aucun résultat trouvé pour "{{ query }}".</h2>
+                            {% endif %}
                             {% endif %}
                     </div>
                         

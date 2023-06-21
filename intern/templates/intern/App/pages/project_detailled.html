@@ -36,9 +36,9 @@
                             <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
                             <div class="header-search">
                                 <div class="input-group">
-                                    <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
-                                    <input type="text" class="form-control">
-                                    <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>
+                                    {% comment %} <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
+                                    <input type="text" class="form-control"> {% endcomment %}
+                                    <a href="{% url 'search' %}"><span class="input-group-addon search-btn"><i class="ik ik-search"></i></span></a>
                                 </div>
                             </div>
                             <button type="button" id="navbar-fullscreen" class="nav-link"><i class="ik ik-maximize"></i></button>
@@ -218,7 +218,7 @@
                                         <ul>
                                         {% for document in Documents %}
                                             {% if document.project.title == project.title %}
-                                            <a href="{% url 'documents' %}"><li>{{ document.title }}</li></a>
+                                            <a href="{% url 'document_update' document.id %}"><li>{{ document.title }}</li></a>
                                             {% endif %}
                                         {% endfor %}
                                         </ul>
@@ -229,8 +229,10 @@
                                 <div class="buttons">
                                     <a href="{% url 'tasklist' %}"><button class="btn-supp">Liste des tâches</button></a>
                                     <a href="{% url 'add_task' %}"><button class="btn-supp">Ajouter une tâche</button></a>
+                                    <a href="{% url 'add_document' %}"><button class="btn btn-primary mr-2"><i class="ik ik-share"></i>Ajouter un document</button></a>
                                     {% else %}
                                     <a href="{% url 'tasklistEnded' object.id %}"><button class="btn-supp">Liste des tâches</button></a>
+                                    <a href="{% url 'project' %}"><button class="btn btn-primary mr-2">Liste des projets</button></a>
                                     
                                 </div>
                                 {% endif %}
@@ -242,12 +244,13 @@
 
                 </div>
                 
-                <footer class="footer">
-                    <div class="w-100 clearfix">
-                        <span class="text-center text-sm-left d-md-inline-block">Copyright © 2023 ICCSOFT SA - Internship Project Manager All Rights Reserved.</span>
-                    </div>
-                </footer>
+                
             </div>
+            <footer class="footer">
+                <div class="w-100 clearfix">
+                    <span class="text-center text-sm-left d-md-inline-block">Copyright © 2023 ICCSOFT SA - Internship Project Manager All Rights Reserved.</span>
+                </div>
+            </footer>
         </div>
 
 

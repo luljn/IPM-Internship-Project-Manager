@@ -36,9 +36,9 @@
                             <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
                             <div class="header-search">
                                 <div class="input-group">
-                                    <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
-                                    <input type="text" class="form-control">
-                                    <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>
+                                    {% comment %} <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
+                                    <input type="text" class="form-control"> {% endcomment %}
+                                    <a href="{% url 'search' %}"><span class="input-group-addon search-btn"><i class="ik ik-search"></i></span></a>
                                 </div>
                             </div>
                             <button type="button" id="navbar-fullscreen" class="nav-link"><i class="ik ik-maximize"></i></button>
@@ -122,9 +122,9 @@
                                             {% if error %}
                                                 <p class = 'error'>{{ error }}</p>
                                             {% endif %} {% endcomment %}
-                                            <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
+                                            <button type="submit" class="btn btn-primary mr-2"><i class="ik ik-clipboard"></i>Enregistrer</button>
                                         </form>
-                                        <a href="{% url 'delete_task' object.id %}"><button class='btn-supp'>Supprimer</button></a> 
+                                        <a href="{% url 'delete_task' object.id %}"><button class='btn-supp'><i class="ik ik-info"></i> Supprimer</button></a> 
                                             <style>
                                                 .title{
                                                     text-align: center;
@@ -197,12 +197,59 @@
                                                     justify-content: center;
                                                     align-items: center;
                                                 }
+
+                                                .card-2{
+                                                    margin-bottom: 30px;
+                                                    border: 1px solid #000;
+                                                    box-shadow: 0 0 10px 5px #888;
+                                                    width: 600px;
+                                                }
+    
+                                                .card-2 h2{
+                                                    font-weight: bold;
+                                                    margin-left: 10px;
+                                                }
+    
+                                                .card-2 p{
+                                                    font-size: 20px;
+                                                    margin-left: 20px;
+                                                }
+    
+                                                .card-2 li{
+                                                    font-size: 20px;
+                                                    margin-left: 20px;
+                                                }
+    
+                                                .buttons{
+                                                    margin-bottom: 30px;
+                                                }
+    
+                                                .container-card{
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                }
                                             </style>
+                                    </div>
+                                </div>
+
+                                <div class="container-card">
+                                    <div class="card-2">
+                                        <div class="card-header-1"><h3 class='title'>Document(s) associé(s)</h3></div>
+                                        <ul>
+                                        {% for document in Documents %}
+                                            {% if document.task.title == object.title %}
+                                            <a href="{% url 'document_update' document.id %}"><li>{{ document.title }}</li></a>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </ul>
                                     </div>
                                 </div>
                         </div>
 
-                        <a href="{% url 'tasklist' %}"><button class="btn btn-primary mr-2">Liste des tâches</button></a>
+                        <a href="{% url 'tasklist' %}"><button class="btn btn-primary mr-2"><i class="ik ik-layers"></i>Liste des tâches</button></a>
+                        <a href="{% url 'add_document_to_task' %}"><button class="btn btn-primary mr-2"><i class="ik ik-share"></i>Ajouter un document</button></a>
 
                     </div>
                 </div>
