@@ -126,9 +126,48 @@ class UpdatePhotoForm(forms.ModelForm) :
         
 class DocumentUploadForm(forms.ModelForm) :
     
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(DocumentUploadForm, self).__init__(*args, **kwargs)
+        
+    def CollectUser(self) :
+        
+        user = self.request.user
+        return user
+    
+    id = 1
+    # CHOICES = [('option1', 'Option 1'), ('option2', 'Option 2')]
+    # my_choice_field = forms.ChoiceField(choices=CHOICES, widget=forms.Select)
+    Tasks = Task.objects.all()
+    TASK_CHOICES = [] # liste de choix pour les tâches.
+    i = 1
+    
+    # user = User.objects.get(id=id)
+    # intern = Intern.objects.get(user=user)
+    # internship = Intership.objects.filter(intern=intern, status='En cours')
+    # project = Project.objects.filter(internship=internship, status='En cours')
+    # Tasks = Task.objects.all()
+    
+    # On génère la liste de choix pour les tâches.
+    for task in Tasks :
+        if task.project.title == "Conception et implémentation d'une application web de suivi des projets de stage" :
+            TASK_CHOICES.append((f'option{i}', task))
+            i += 1
+        
+    task = forms.ChoiceField(choices=TASK_CHOICES, widget=forms.Select)
+    
     class Meta :
         
         model = Document
         fields = ['title', 'description', 'is_public', 'fichier', 'project', 'phase', 'task']
         # fields = '__all__'
+        
+        
+        
+class UpdateDocumentForm(forms.ModelForm) :
+    
+    class Meta :
+        
+        model = Document
+        fields = ['title', 'description', 'is_public', 'fichier', 'task']
     

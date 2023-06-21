@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>IPM - My Projects</title>
+        <title>IPM - Documents</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -59,7 +59,7 @@
             <div class="page-wrap">
                 <div class="app-sidebar colored">
                     <div class="sidebar-header">
-                        <a class="header-brand" href="{% url 'home' %}">
+                        <a class="header-brand" href="index.html">
                             <div class="logo-img">
                                <img src="" class="header-brand-img" alt=""> 
                             </div>
@@ -76,13 +76,13 @@
                                 <div class="nav-item">
                                     <a href="{% url 'home' %}"><i class="ik ik-home"></i><span>Accueil</span></a>
                                 </div>
-                                <div class="nav-item active">
+                                <div class="nav-item">
                                     <a href="{% url 'project' %}"><i class="ik ik-menu"></i><span>Mes Projets</span></a>
                                 </div>
                                 <div class="nav-item">
                                     <a href="{% url 'tasklist' %}"><i class="ik ik-layers"></i><span>Mes tâches</span></a>
                                 </div>
-                                <div class="nav-item">
+                                <div class="nav-item active">
                                     <a href="{% url 'documents' %}"><i class="ik ik-file-text"></i><span>Documents</span></a>
                                 </div>
                             </nav>
@@ -95,108 +95,143 @@
                             <div class="row align-items-end">
                                 <div class="col-lg-8">
                                     <div class="page-header-title">
-                                        <i class="ik ik-menu bg-blue"></i>
+                                        <i class="ik ik-layers bg-blue"></i>
                                         <div class="d-inline">
-                                            <h5>Mes Projets</h5>
-                                            <span>Voici la liste de vos projets</span>
+                                            <h5>Modification de document</h5>
+                                            <span>{{ object.title }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    {% if user.is_authenticated %}
-                        <div class="card-body">
+                        <div class="container-card">
+                                <div class="card-1">
+                                    <div class="card-header"><h3 class='title'>Modifier le document</h3></div>
+                                    <div class="card-body">
+                                        <form class="update-form" method='post' enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            {{ form.media }}
+                                            {{ form.as_p }}
+                                            {% comment %} {% for field in form %}
+                                                <div class="form-group">
+                                                {{ field.label_tag }}
+                                                {{ field }}
+                                                </div>
+                                            {% endfor %}
+                                            {% if error %}
+                                                <p class = 'error'>{{ error }}</p>
+                                            {% endif %} {% endcomment %}
+                                            <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
+                                        </form>
+                                        <a href="{% url 'delete_document' object.id %}"><button class='btn-supp'>Supprimer</button></a> 
+                                            <style>
+                                                .title{
+                                                    text-align: center;
+                                                    font-size : 30px;
+                                                }
 
-                            {% comment %} {% for project in Projects %}
-                            {% if project.internship.intern.user.username == user.username %} {% endcomment %}
-                            
-                            <table id="advanced_table" class="table">
-                                {% comment %} <caption>{{ project.title }}</caption> {% endcomment %}
-                                <thead>
-                                    <tr>
-                                        <th>Projet</th>
-                                        <th>Description</th>
-                                        <th>Etat</th>
-                                        <th>Début</th>
-                                        <th>Fin</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for project in Projects %}
-                                    {% if project.internship.intern.user.username == user.username %}
-                                    <tr>
-                                        <td>{{ project.title }}</td>
-                                        <td>{{ project.description }}</td>
-                                        <td>{{ project.status }}</td>
-                                        <td>{{ project.start_date }}</td>
-                                        <td>{{ project.end_date }}</td>
-                                        {% if project.status == 'En cours' %}
-                                            <td><a href="{% url 'update_project' project.id %}"><button class='btn-modify'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
-                                            <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
-                                        {% else %}
-                                            <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
-                                        {% endif %}
-                                        
-                                        <style>
-                                                .btn-modify{
-                                                    background-color: #4CAF50;
+                                                .btn-supp{
+                                                    background-color: red;
                                                     color: white;
-                                                    font-size: 12px;
-                                                    font-weight: bold;
+                                                    width: 95px;
+                                                    font-size: 14px;
+                                                    text-align: center;
                                                     border: none;
                                                     padding: 5px;
                                                     border-radius: 3px;
-                                                    width: 90px;
+                                                    margin-top: 10px;
                                                 }
-                                            
-                                                .btn-modify:active{
+                                                .btn-supp:active{
                                                     opacity: 0.5;
+                                                }
+                                                  
+                                                .update-form p input[type="text"],
+                                                textarea 
+                                                {
+                                                    padding: 5px;
+                                                    border: 1px solid #ccc;
+                                                    border-radius: 3px;
+                                                    width: 100%;
+                                                    margin-top: 5px;
+                                                    font-size: 15px;
+                                                    font-weight: bold;
+                                                }
+
+                                                .update-form p{
+                                                    {% comment %} color: #45f3ff; {% endcomment %}
+                                                    font-size: 15px;
+                                                    font-weight: bold;
+                                                    margin-bottom : 5px;
+                                                }
+    
+                                                .update-form input{
+                                                    width: 100%;
+                                                    padding: 5px 5px 5px;
+                                                    background: transparent;
+                                                    outline: none;
+                                                    margin-bottom : 10px;
+                                                    font-size: 15px;
                                                 }
 
                                                 .card-1{
                                                     margin-bottom: 30px;
                                                     border: 1px solid #000;
                                                     box-shadow: 0 0 10px 5px #888;
-                                                    width: 400px;
+                                                    width: 100%;
                                                 }
-
-                                                .card-1 h3{
+    
+                                                .card-1 h2{
                                                     font-weight: bold;
                                                     margin-left: 10px;
                                                 }
-
-                                                .card-1 li{
+    
+                                                .card-1 p{
                                                     font-size: 20px;
                                                     margin-left: 20px;
                                                 }
-
+    
                                                 .container-card{
                                                     display: flex;
                                                     flex-direction: column;
                                                     justify-content: center;
                                                     align-items: center;
                                                 }
-                                        </style>
-                                    </tr>
-                                    {% endif %}
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                            </div>
-                            
+                                            </style>
+                                    </div>
+                                </div>
                         </div>
-                        {% endif %}
 
-                        <footer class="footer">
-                            <div class="w-100 clearfix">
-                                <span class="text-center text-sm-left d-md-inline-block">Copyright © 2023 ICCSOFT SA - Internship Project Manager All Rights Reserved.</span>
+                        <a href="{% url 'documents' %}"><button class="btn btn-primary mr-2">Liste des documents</button></a>
+
+                    </div>
+                </div>
+                
+                <footer class="footer">
+                    <div class="w-100 clearfix">
+                        <span class="text-center text-sm-left d-md-inline-block">Copyright © 2023 ICCSOFT SA - Internship Project Manager All Rights Reserved.</span>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+
+        <div class="modal fade apps-modal" id="appsModal" tabindex="-1" role="dialog" aria-labelledby="appsModalLabel" aria-hidden="true" data-backdrop="false">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ik ik-x-circle"></i></button>
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="quick-search">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4 ml-auto mr-auto">
+                                    <div class="input-wrap">
+                                        <input type="text" id="quick-search" class="form-control" placeholder="Search..." />
+                                        <i class="ik ik-search"></i>
+                                    </div>
+                                </div>
                             </div>
-                        </footer>
-                    
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -109,7 +109,7 @@
                         
                         {% if user.is_authenticated %}
                         <div class="card-body">
-                            <caption class="caption">Documents publics</caption>
+                            <h3 class="title">Documents publics</h3>
                             <table id="advanced_table" class="table">
                                 <thead>
                                     <tr>
@@ -128,8 +128,11 @@
                                     {% for document in Documents%}
                                     {% if document.project is None or document.is_public == True %}
                                     <tr>
-                                        {% comment %} <td>{{ document.id }}</td> {% endcomment %}
+                                        {% if document.project is not None and document.project.internship.intern.user.username == user.username %}
+                                        <td><a href="{% url 'document_update' document.id %}">{{ document.title }}</a></td>
+                                        {% else %}
                                         <td>{{ document.title }}</td>
+                                        {% endif %}
                                         <td>{{ document.description }}</td>
                                         {% comment %} <td>{{ document.status }}</td>
                                         <td>{{ document.start_date }}</td>
@@ -148,6 +151,12 @@
                                             .btn-supp:active{
                                                 opacity: 0.5;
                                             }
+
+                                            .title{
+                                                font-size: 25px;
+                                                font-weight: bold;
+                                                text-align: center; 
+                                            }
                                         </style>
                                     </tr>
                                     {% endif %}
@@ -157,7 +166,7 @@
                         </div>
 
                         <div class="card-body">
-                            <caption class="caption">Vos documents privés</caption>
+                            <h3 class="title">Vos documents privés</h3>
                             <table id="advanced_table" class="table">
                                 
                                 <thead>
@@ -166,8 +175,8 @@
                                         <th>Titre</th>
                                         <th>Description</th>
                                         <th>Projet associé</th>
-                                        {% comment %} <th>Etat</th>
-                                        <th>Début</th>
+                                        <th>Tâche associée</th>
+                                        {% comment %} <th>Début</th>
                                         <th>Fin</th> {% endcomment %}
                                         <th></th> 
                                         <th></th> 
@@ -178,11 +187,11 @@
                                     {% if document.project.internship.intern.user.username == user.username and document.is_public == False %}
                                     <tr>
                                         {% comment %} <td>{{ document.id }}</td> {% endcomment %}
-                                        <td>{{ document.title }}</td>
+                                        <td><a href="{% url 'document_update' document.id %}">{{ document.title }}</a></td>
                                         <td>{{ document.description }}</td>
                                         <td>{{ document.project.title }}</td>
-                                        {% comment %} <td>{{ document.start_date }}</td>
-                                        <td>{{ document.end_date }}</td> {% endcomment %}
+                                        <td>{{ document.task.title }}</td>
+                                        {% comment %} <td>{{ document.end_date }}</td> {% endcomment %}
                                         <td><a href="{% url 'download_document' document.id %}"><button class='btn-supp'>Télécharger</button></a></td>
                                         <td><a href="{% url 'delete_document' document.id %}"><button class='btn btn-danger btn-rounded'>Supprimer</button></a></td>
                                         <style>
@@ -199,8 +208,8 @@
                                                 opacity: 0.5;
                                             }
 
-                                            .card-body caption{
-                                                font-size: 150px;
+                                            .title{
+                                                font-size: 25px;
                                                 font-weight: bold;
                                                 text-align: center; 
                                             }
@@ -213,7 +222,8 @@
                         </div>
                         {% endif %}
 
-                        <a href="{% url 'add_document' %}"><button class="btn btn-primary mr-2"><i class="ik ik-share"></i>Ajouter un document</button></a>
+                        <a href="{% url 'add_document' %}"><button class="btn btn-primary mr-2"><i class="ik ik-share"></i>Ajouter un document au projet</button></a>
+                        <a href="{% url 'add_document_to_task' %}"><button class="btn btn-primary mr-2"><i class="ik ik-share"></i>Ajouter un document à une tâche</button></a>
 
                     </div>
                 </div>

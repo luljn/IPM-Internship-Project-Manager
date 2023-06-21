@@ -155,6 +155,7 @@
                         {% endif %}
                                 
                         <a href="{% url 'project_detailled' project.id %}"><button class="btn btn-primary mr-2">Retour au projet</button></a>
+                        <a href="{% url 'export_to_excel' project.internship.id %}"><button class="btn btn-primary mr-2">Télécharger</button></a>
                 
                     </div>
                 </div>

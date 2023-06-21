@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from django.core.exceptions import ValidationError
 from django.dispatch import receiver
 from ckeditor.fields import RichTextField
 
@@ -136,6 +137,14 @@ class Intership(models.Model) :
         verbose_name = "Stage"
         verbose_name_plural = "Stages"
         
+    def clean(self) :
+        
+        super().clean()
+
+        if self.start_date and self.end_date and self.end_date < self.start_date :
+            
+            raise ValidationError("La date de fin ne peut pas être antérieure à la date de début.")
+        
     def __str__(self) :
         
         return f'Stage de {self.intern.user.first_name} {self.intern.user.last_name} - {self.start_date}'
@@ -168,6 +177,14 @@ class Project(models.Model) :
         
         verbose_name = "Projet"
         verbose_name_plural = "Projets"
+        
+    def clean(self) :
+        
+        super().clean()
+
+        if self.start_date and self.end_date and self.end_date < self.start_date :
+            
+            raise ValidationError("La date de fin ne peut pas être antérieure à la date de début.")
         
     def __str__(self) :
         
@@ -202,9 +219,18 @@ class Task(models.Model) :
         verbose_name = "Tâche"
         verbose_name_plural = "Tâches"
         
+    def clean(self) :
+        
+        super().clean()
+
+        if self.start_date and self.end_date and self.end_date < self.start_date :
+            
+            raise ValidationError("La date de fin ne peut pas être antérieure à la date de début.")
+        
     def __str__(self) :
         
-        return f'{self.title} - Projet : {self.project.title}'
+        return f'{self.title}'
+        # return f'{self.title}- Projet : {self.project.title}'
     
     
     
@@ -234,6 +260,14 @@ class Phase(models.Model) :
         
         verbose_name = "Phase"
         verbose_name_plural = "Phases" 
+        
+    def clean(self) :
+        
+        super().clean()
+
+        if self.start_date and self.end_date and self.end_date < self.start_date :
+            
+            raise ValidationError("La date de fin ne peut pas être antérieure à la date de début.")
         
     def __str__(self) :
         

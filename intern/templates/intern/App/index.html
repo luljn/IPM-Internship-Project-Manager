@@ -45,9 +45,9 @@
                             <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
                             <div class="header-search">
                                 <div class="input-group">
-                                    <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
-                                    <input type="text" class="form-control">
-                                    <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>
+                                    {% comment %} <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
+                                    <input type="text" class="form-control"> {% endcomment %}
+                                    <a href="{% url 'search' %}"><span class="input-group-addon search-btn"><i class="ik ik-search"></i></span></a>
                                 </div>
                             </div>
                             <button type="button" id="navbar-fullscreen" class="nav-link"><i class="ik ik-maximize"></i></button>
@@ -99,6 +99,9 @@
                                 <div class="nav-item">
                                     <a href="{% url 'documents' %}"><i class="ik ik-file-text"></i><span>Documents</span></a>
                                 </div>
+                                {% comment %} <div class="nav-item">
+                                    <a href="{% url 'search' %}"><i class="ik ik-search"></i><span>Rechercher</span></a>
+                                </div> {% endcomment %}
                             </nav>
                         </div>
                     </div>
@@ -115,7 +118,128 @@
                                             {% if user.is_authenticated %}
                                             <h5>BIENVENUE</h5>
                                             <span>{{ user.username }}</span>
-                                            {% endif %}
+                                            {% comment %} {% endif %} {% endcomment %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header d-block">
+                                        <h3>Projet(s) récent(s)</h3>
+                                    </div>
+                                    <div class="card-body p-0 table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Titre</th>
+                                                        <th>Description</th>
+                                                        <th>Etat</th>
+                                                        <th>Début</th>
+                                                        <th>Fin</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for project in Projects %}
+                                                    {% if project.internship.intern.user.username == user.username %}
+                                                    <tr>
+                                                        <td>{{ project.title }}</td>
+                                                        <td>{{ project.description }}</td>
+                                                        <td>{{ project.status }}</td>
+                                                        <td>{{ project.start_date }}</td>
+                                                        <td>{{ project.end_date }}</td>
+                                                        <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header d-block">
+                                        <h3>Tâche(s) récente(s)</h3>
+                                    </div>
+                                    <div class="card-body p-0 table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Titre</th>
+                                                        <th>Description</th>
+                                                        <th>Etat</th>
+                                                        <th>Début</th>
+                                                        <th>Fin</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for task in recent_tasks %}
+                                                    <tr>
+                                                        <td>{{ task.title }}</td>
+                                                        <td>{{ task.description }}</td>
+                                                        <td>{{ task.status }}</td>
+                                                        <td>{{ task.start_date }}</td>
+                                                        <td>{{ task.end_date }}</td>
+                                                        <td><a href="{% url 'task_detailled' task.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                                        <style>
+                                                            .btn-supp{
+                                                                background-color: #4CAF50;
+                                                                color: white;
+                                                                font-size: 12px;
+                                                                font-weight: bold;
+                                                                border: none;
+                                                                padding: 5px;
+                                                                border-radius: 3px;
+                                                                width: 100px;
+                                                            }
+                                                            .btn-supp:active{
+                                                                opacity: 0.5;
+                                                            }
+                                                        </style>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header d-block">
+                                        <h3>Document(s) récent(s)</h3>
+                                    </div>
+                                    <div class="card-body p-0 table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Titre</th>
+                                                        <th>Description</th>
+                                                        <th>Projet associé</th>
+                                                        <th>Tâche associée</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for document in recent_documents %}
+                                                    <tr>
+                                                        <td>{{ document.title }}</td>
+                                                        <td>{{ document.description }}</td>
+                                                        <td>{{ document.project.title }}</td>
+                                                        <td>{{ document.task.title }}</td>
+                                                        <td><a href="{% url 'document_update' document.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -258,6 +382,8 @@
 
                     </div>
                 </div>
+                {% comment %} endif : user.is_authenticated {% endcomment %}
+                {% endif %}
 
                 <footer class="footer">
                     <div class="w-100 clearfix">

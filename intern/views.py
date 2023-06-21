@@ -6,10 +6,12 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import DetailView, View
 from django.utils.encoding import smart_str
 from django.core.mail import send_mail
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.http import HttpResponse
+from openpyxl import Workbook
 from .models import *
 from .forms import *
 
@@ -44,9 +46,14 @@ def home(request) :
     user = request.user
     intern = Intern.objects.get(user=user)
     internship = Intership.objects.get(intern=intern, status='En cours')
-    project = Project.objects.filter(internship=internship, status='En cours')
+    project = Project.objects.get(internship=internship, status='En cours')
     Tasks = Task.objects.all()
     internships = intern.intership_set.all()
+    
+    Projects = Project.objects.all()
+    
+    recent_tasks = project.task_set.order_by('-id')[:5] # Liste des tâches récentes.
+    recent_documents =  project.document_set.order_by('-id')[:5] # Liste des documents récents.
     
     data = [] # Les données pour le graphe 'Tâches'.
     data_1 = [] # Les données pour le graphe 'Projets'.
@@ -111,7 +118,7 @@ def home(request) :
     data_1.append(len(P_EnCours))
     data_1.append(len(P_Termine))
     
-    return render(request, 'intern/App/index.html', {'data' : data, 'data_1' : data_1})
+    return render(request, 'intern/App/index.html', {'Projects' : Projects, 'recent_tasks' : recent_tasks, 'recent_documents' : recent_documents, 'data' : data, 'data_1' : data_1})
 
 
 
@@ -120,8 +127,9 @@ def project(request) :
     
     Projects = Project.objects.all()
     Interships = Intership.objects.all()
+    Documents = Document.objects.all()
 
-    return render(request, 'intern/App/pages/project.html', {'Projects' : Projects, 'Interships' : Interships})
+    return render(request, 'intern/App/pages/project.html', {'Projects' : Projects, 'Interships' : Interships, 'Documents' : Documents})
 
 
 
@@ -231,6 +239,59 @@ class UploadDocumentView(LoginRequiredMixin, CreateView) :
         form.fields['phase'].label = ''
         form.fields['task'].label = ''
         return form
+        
+        
+        
+class UploadDocumentToTaskView(LoginRequiredMixin, CreateView) :
+
+    template_name = 'intern/App/pages/document_add_to_task.html'
+    model = Document
+    form_class = DocumentUploadForm
+    success_url = reverse_lazy('documents')
+    
+    # On definit la methode dispatch, pour pouvoir utiliser l'objet request.
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        return super().dispatch(request, *args, **kwargs)
+    
+    # Pour définir le projet de l'utilisateur dynamiquement.
+    # (Ici, on recupere l'utilisateur et son projet 'En cours').
+    def get_initial(self) :
+        
+        initial = super(UploadDocumentToTaskView, self).get_initial()
+        user = self.request.user # On recupere l'utilisateur actuellement connecté.
+        intern = Intern.objects.get(user=user)
+        internships = Intership.objects.filter(intern=intern)
+        
+        for internship in internships :
+            
+            if internship.status == 'En cours' :
+                
+                project = Project.objects.get(internship=internship)
+                initial['project'] = project
+        
+        return initial   
+    
+    # Pour rendre le champ de choix du projet invisible.
+    def get_form(self, form_class=None) :
+        
+        form = super().get_form(form_class)
+        form.fields['project'].widget = forms.HiddenInput(attrs={'hidden':True})
+        form.fields['phase'].widget = forms.HiddenInput(attrs={'hidden':True})
+        # form.fields['task'].widget = forms.HiddenInput(attrs={'hidden':True})
+        form.fields['project'].label = ''
+        form.fields['phase'].label = ''
+        form.fields['task'].label = 'Tâche'
+        return form
+    
+    
+    
+class UpdateDocumentView(LoginRequiredMixin, UpdateView) :
+
+    template_name = 'intern/App/pages/document_update.html'
+    model = Document
+    form_class = UpdateDocumentForm
+    success_url = reverse_lazy('documents')
 
 
 
@@ -351,6 +412,14 @@ class DetailledProjectView(LoginRequiredMixin, DetailView) :
     model = Project
     template_name = 'intern/App/pages/project_detailled.html'
     
+    def get_context_data(self, **kwargs) :
+        
+        context = super().get_context_data(**kwargs)
+        Documents = Document.objects.all()
+        my_dict = {'Documents': Documents}
+        context.update(my_dict)
+        return context
+    
     
     
 class DownloadFileView(View) :
@@ -402,3 +471,163 @@ def send_welcome_email(request):
             return redirect(obj)
         except:
             return redirect('/admin')
+        
+        
+        
+def export_to_excel(request, id) :
+    
+    user = request.user
+    intern = Intern.objects.get(user=user)
+    internship = Intership.objects.get(intern=intern, id=id)
+    project = Project.objects.get(internship=internship)
+    Tasks = Task.objects.all()
+    
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = f'attachement; filename=Tâches - Projet({project.title}).xlsx'
+    
+    # On crée un nouveau classeur Excel.
+    wb = Workbook()
+
+    # On crée une nouvelle feuille de calcul. (celle des tâches)
+    ws = wb.active
+    ws.title = "Tâches"
+    
+    # On crée une nouvelle feuille de calcul. (celle du projet)
+    ws_1 = wb.create_sheet(title="Projet")
+    # ws_1.title = "Projet"
+
+    # On récupère les données du modèle.
+    data_1 = []
+    
+    for task in Tasks :
+        
+        if task.project.title == project.title :
+            
+            data_1.append(task)
+
+    # On écrit les données dans la feuille de calcul.
+    columns = ['Titre', 'Description', 'Date de début', 'Date de fin', 'État']
+    row_num = 1
+    
+    # First sheet (celle des tâches).
+    for col_num, column_title in enumerate(columns, 1) :
+        
+        cell = ws.cell(row=row_num, column=col_num)
+        cell.value = column_title
+    
+    for obj in data_1 :
+        
+        row_num += 1
+        row = [obj.title, obj.description, obj.start_date, obj.end_date, obj.status]
+        for col_num, cell_value in enumerate(row, 1) :
+        
+            cell = ws.cell(row=row_num, column=col_num)
+            cell.value = cell_value
+    
+    # Second sheet (celle du projet).
+    row_num = 1
+    
+    for col_num, column_title in enumerate(columns, 1) :
+        
+        cell = ws_1.cell(row=row_num, column=col_num)
+        cell.value = column_title
+    
+    row_num += 1       
+    row_1 = [project.title, project.description, project.start_date, project.end_date, project.status]
+    for col_num, cell_value in enumerate(row_1, 1) :
+
+        cell = ws_1.cell(row=row_num, column=col_num)
+        cell.value = cell_value
+
+    wb.save(response)
+    return response
+
+
+
+def export_to_excel_current_project(request) :
+    
+    user = request.user
+    intern = Intern.objects.get(user=user)
+    internship = Intership.objects.get(intern=intern, status='En cours')
+    project = Project.objects.get(internship=internship, status='En cours')
+    Tasks = Task.objects.all()
+    
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = f'attachement; filename=Tâches - Projet({project.title}).xlsx'
+    
+    # On crée un nouveau classeur Excel.
+    wb = Workbook()
+
+    # On crée une nouvelle feuille de calcul. (celle des tâches)
+    ws = wb.active
+    ws.title = "Tâches"
+    
+    # On crée une nouvelle feuille de calcul. (celle du projet)
+    ws_1 = wb.create_sheet(title="Projet")
+    # ws_1.title = "Projet"
+
+    # On récupère les données du modèle.
+    data_1 = []
+    
+    for task in Tasks :
+        
+        if task.project.title == project.title :
+            
+            data_1.append(task)
+
+    # On écrit les données dans la feuille de calcul.
+    columns = ['Titre', 'Description', 'Date de début', 'Date de fin', 'État']
+    row_num = 1
+    
+    # First sheet (celle des tâches).
+    for col_num, column_title in enumerate(columns, 1) :
+        
+        cell = ws.cell(row=row_num, column=col_num)
+        cell.value = column_title
+    
+    for obj in data_1 :
+        
+        row_num += 1
+        row = [obj.title, obj.description, obj.start_date, obj.end_date, obj.status]
+        for col_num, cell_value in enumerate(row, 1) :
+        
+            cell = ws.cell(row=row_num, column=col_num)
+            cell.value = cell_value
+    
+    # Second sheet (celle du projet).
+    row_num = 1
+    
+    for col_num, column_title in enumerate(columns, 1) :
+        
+        cell = ws_1.cell(row=row_num, column=col_num)
+        cell.value = column_title
+    
+    row_num += 1       
+    row_1 = [project.title, project.description, project.start_date, project.end_date, project.status]
+    for col_num, cell_value in enumerate(row_1, 1) :
+
+        cell = ws_1.cell(row=row_num, column=col_num)
+        cell.value = cell_value
+
+    wb.save(response)
+    return response
+
+
+
+def search(request) : 
+    
+    query = request.GET.get('q')
+    user = request.user
+    
+    # Pour éviter d'effectuer une requête avec une valeur 'None'.
+    if query is not None : 
+        
+        results = Project.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
+        context = {
+            'results' : results,
+            'query' : query,
+        }
+    
+        return render(request, 'intern/App/pages/search.html', context)
+    
+    return render(request, 'intern/App/pages/search.html')

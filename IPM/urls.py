@@ -34,7 +34,7 @@ urlpatterns = [
     path('project/', intern.views.project, name='project'),  
     # page des tâches des projets 'En cours'.                       
     path('tasklist/', intern.views.tasklist, name='tasklist'),
-    # page détaillée de chaque tâche.
+    # page détaillée et de mise à jour de chaque tâche.
     path('tasklist/<int:pk>/', intern.views.DetailledTaskView.as_view(), name='task_detailled'),
     # page d'ajout tâche.
     path('add_task/', intern.views.AddTaskView.as_view(), name='add_task'),
@@ -58,10 +58,20 @@ urlpatterns = [
     path('documents/', intern.views.documentlist, name='documents'),
     # page d'ajout de document.
     path('add_document/', intern.views.UploadDocumentView.as_view(), name='add_document'),
+    # page d'ajout de document (à une tâche).
+    path('add_document_to_task/', intern.views.UploadDocumentToTaskView.as_view(), name='add_document_to_task'),
     # page de téléchargement de document.
     path('download_document/<int:pk>/', intern.views.DownloadFileView.as_view(), name='download_document'),
     # page de suppression de document.
-    path('delete_document/<int:pk>/', intern.views.DeleteDocument.as_view(), name='delete_document')
+    path('delete_document/<int:pk>/', intern.views.DeleteDocument.as_view(), name='delete_document'),
+    # page de mise à jour de chaque document.
+    path('documents/<int:pk>/', intern.views.UpdateDocumentView.as_view(), name='document_update'),
+    # page de téléchargement de la liste des tâches d'un projet en fichier excel.
+    path('export_to_excel/<int:id>/', intern.views.export_to_excel, name='export_to_excel'),
+    # page de téléchargement de la liste des tâches du projet 'En cours' en fichier excel.
+    path('export_to_excel_current_project/', intern.views.export_to_excel_current_project, name='export_to_excel_current_project'),
+    # url pour la recherche.
+    path('search/', intern.views.search, name='search')
 ]
 
 handler404 = 'intern.views.error404'
