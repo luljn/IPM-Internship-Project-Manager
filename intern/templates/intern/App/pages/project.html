@@ -137,10 +137,10 @@
                                                         <td>{{ project.start_date }}</td>
                                                         <td>{{ project.end_date }}</td>
                                                         {% if project.status == 'En cours' %}
-                                                            <td><a href="{% url 'update_project' project.id %}"><button class='btn-modify'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
-                                                            <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
+                                                            <td><a href="{% url 'update_project' project.id %}"><button class='btn-modify'><i class="ik ik-edit"></i> Modifier</button></a></td>
+                                                            <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'><i class="ik ik-eye"></i>Consulter</button></a></td>
                                                         {% else %}
-                                                            <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
+                                                            <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'><i class="ik ik-eye"></i>Consulter</button></a></td>
                                                         {% endif %}
                                                     </tr>
                                                     {% endif %}
@@ -156,7 +156,8 @@
                                                     border: none;
                                                     padding: 5px;
                                                     border-radius: 3px;
-                                                    width: 90px;
+                                                    width: 110px;
+                                                    height: 30px;
                                                 }
                                             
                                                 .btn-modify:active{

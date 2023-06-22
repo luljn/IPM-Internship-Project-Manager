@@ -237,7 +237,7 @@
                                                                 <td>{{ project.status }}</td>
                                                                 <td>{{ project.start_date }}</td>
                                                                 <td>{{ project.end_date }}</td>
-                                                                <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
+                                                                <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'><i class="ik ik-eye"></i>Consulter</button></a></td>
                                                             </tr>
                                                             {% endif %}
                                                             {% endfor %}
@@ -274,7 +274,7 @@
                                                                 <td>{{ task.start_date }}</td>
                                                                 <td>{{ task.end_date }}</td>
                                                                 {% if task.project.status == 'En cours' %}
-                                                                <td><a href="{% url 'task_detailled' task.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                                                <td><a href="{% url 'task_info' task.id %}"><button class='btn btn-primary mr-2'><i class="ik ik-eye"></i>Consulter</button></a></td>
                                                                 {% endif %}
                                                                 <style>
                                                                     .btn-supp{
@@ -324,10 +324,11 @@
                                                                 <td>{{ document.project.title }}</td>
                                                                 <td>{{ document.task.title }}</td>
                                                                 {% if document.project.internship.intern.user.username == user.username and document.is_public == False %}
-                                                                    <td><a href="{% url 'document_update' document.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                                                    <td><a href="{% url 'document_update' document.id %}"><button class='btn-supp'><i class="ik ik-edit"></i> Modifier</button></a></td>
                                                                 {% elif document.project is not None and document.project.internship.intern.user.username == user.username %}
-                                                                    <td><a href="{% url 'document_update' document.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
-                                                                {% comment %} {% elif document.project is None or document.is_public == True %} {% endcomment %}
+                                                                    <td><a href="{% url 'document_update' document.id %}"><button class='btn-supp'><i class="ik ik-edit"></i> Modifier</button></a></td>
+                                                                {% elif document.project is None or document.is_public == True %}
+                                                                    <td><a href="{% url 'document_info' document.id %}"><button class='btn btn-primary mr-2'><i class="ik ik-eye"></i>Consulter</button></a></td>
                                                                 {% endif %}
                                                             </tr>
                                                             {% endfor %}

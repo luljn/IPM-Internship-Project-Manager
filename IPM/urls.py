@@ -34,9 +34,11 @@ urlpatterns = [
     path('project/', intern.views.project, name='project'),  
     # page des tâches des projets 'En cours'.                       
     path('tasklist/', intern.views.tasklist, name='tasklist'),
-    # page détaillée et de mise à jour de chaque tâche.
+    # page de mise à jour de chaque tâche.
     path('tasklist/<int:pk>/', intern.views.DetailledTaskView.as_view(), name='task_detailled'),
-    # page d'ajout tâche.
+    # page détaillée de chaque tâche.
+    path('tasklist/task_info/<int:pk>/', intern.views.InfoTaskView.as_view(), name='task_info'),
+    # page d'ajout de tâche.
     path('add_task/', intern.views.AddTaskView.as_view(), name='add_task'),
     # page de suppresion d'une tâche.
     path('delete_task/<int:pk>/', intern.views.DeleteTask.as_view(), name='delete_task'),
@@ -46,7 +48,7 @@ urlpatterns = [
     path("send_email/", intern.views.send_welcome_email, name="send_email"),
     # page de modification des infos d'un projet.
     path('update_project/<int:pk>/', intern.views.UpdateProjectView.as_view(), name='update_project'),
-    # page de détaillée de chaque projet.
+    # page détaillée de chaque projet.
     path('project/<int:pk>/', intern.views.DetailledProjectView.as_view(), name='project_detailled'),
     # page des tâches terminés ou annulés.                       
     path('tasklist_project_ended/<int:id>/', intern.views.tasklistEnded, name='tasklistEnded'),
@@ -64,13 +66,15 @@ urlpatterns = [
     path('download_document/<int:pk>/', intern.views.DownloadFileView.as_view(), name='download_document'),
     # page de suppression de document.
     path('delete_document/<int:pk>/', intern.views.DeleteDocument.as_view(), name='delete_document'),
-    # page de mise à jour de chaque document.
+    # page de mise à jour de chaque document (document privé).
     path('documents/<int:pk>/', intern.views.UpdateDocumentView.as_view(), name='document_update'),
+    # page détaillée de chaque document (document public).
+    path('documents/document_info/<int:pk>/', intern.views.InfoDocumentView.as_view(), name='document_info'),
     # page de téléchargement de la liste des tâches d'un projet en fichier excel.
     path('export_to_excel/<int:id>/', intern.views.export_to_excel, name='export_to_excel'),
     # page de téléchargement de la liste des tâches du projet 'En cours' en fichier excel.
     path('export_to_excel_current_project/', intern.views.export_to_excel_current_project, name='export_to_excel_current_project'),
-    # url pour la recherche.
+    # path et page pour la recherche.
     path('search/', intern.views.SearchView.as_view(), name='search')
 ]
 

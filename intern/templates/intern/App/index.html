@@ -153,7 +153,7 @@
                                                         <td>{{ project.status }}</td>
                                                         <td>{{ project.start_date }}</td>
                                                         <td>{{ project.end_date }}</td>
-                                                        <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'>Consulter</button></a></td>
+                                                        <td><a href="{% url 'project_detailled' project.id %}"><button class='btn btn-primary mr-2'><i class="ik ik-eye"></i>Consulter</button></a></td>
                                                     </tr>
                                                     {% endif %}
                                                     {% endfor %}
@@ -188,7 +188,7 @@
                                                         <td>{{ task.status }}</td>
                                                         <td>{{ task.start_date }}</td>
                                                         <td>{{ task.end_date }}</td>
-                                                        <td><a href="{% url 'task_detailled' task.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                                        <td><a href="{% url 'task_info' task.id %}"><button class='btn btn-primary mr-2'><i class="ik ik-eye"></i>Consulter</button></a></td>
                                                         <style>
                                                             .btn-supp{
                                                                 background-color: #4CAF50;
@@ -235,7 +235,7 @@
                                                         <td>{{ document.description }}</td>
                                                         <td>{{ document.project.title }}</td>
                                                         <td>{{ document.task.title }}</td>
-                                                        <td><a href="{% url 'document_update' document.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
+                                                        <td><a href="{% url 'document_update' document.id %}"><button class='btn-supp'><i class="ik ik-edit"></i> Modifier</button></a></td>
                                                     </tr>
                                                     {% endfor %}
                                                 </tbody>

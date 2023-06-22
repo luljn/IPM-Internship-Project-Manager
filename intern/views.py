@@ -292,6 +292,12 @@ class UpdateDocumentView(LoginRequiredMixin, UpdateView) :
     model = Document
     form_class = UpdateDocumentForm
     success_url = reverse_lazy('documents')
+    
+    def get_form(self, form_class=None) :
+        
+        form = super().get_form(form_class)
+        form.fields['task'].label = 'Tâche'
+        return form
 
 
 
@@ -427,6 +433,28 @@ class DetailledProjectView(LoginRequiredMixin, DetailView) :
         my_dict = {'Documents': Documents}
         context.update(my_dict)
         return context
+    
+    
+    
+class InfoTaskView(LoginRequiredMixin, DetailView) :
+    
+    model = Task
+    template_name = 'intern/App/pages/task_info.html'
+    
+    def get_context_data(self, **kwargs) :
+        
+        context = super().get_context_data(**kwargs)
+        Documents = Document.objects.all()
+        my_dict = {'Documents': Documents}
+        context.update(my_dict)
+        return context
+    
+    
+    
+class InfoDocumentView(LoginRequiredMixin, DetailView) :
+    
+    model = Document
+    template_name = 'intern/App/pages/document_info.html'
     
     
     

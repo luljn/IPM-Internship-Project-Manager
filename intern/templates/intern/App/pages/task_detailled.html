@@ -113,18 +113,9 @@
                                             {% csrf_token %}
                                             {{ form.media }}
                                             {{ form.as_p }}
-                                            {% comment %} {% for field in form %}
-                                                <div class="form-group">
-                                                {{ field.label_tag }}
-                                                {{ field }}
-                                                </div>
-                                            {% endfor %}
-                                            {% if error %}
-                                                <p class = 'error'>{{ error }}</p>
-                                            {% endif %} {% endcomment %}
                                             <button type="submit" class="btn btn-primary mr-2"><i class="ik ik-clipboard"></i>Enregistrer</button>
                                         </form>
-                                        <a href="{% url 'delete_task' object.id %}"><button class='btn-supp'><i class="ik ik-info"></i> Supprimer</button></a> 
+                                        <a href="{% url 'delete_task' object.id %}"><button class='btn-supp'><i class="ik ik-trash"></i> Supprimer</button></a> 
                                             <style>
                                                 .title{
                                                     text-align: center;
@@ -134,8 +125,9 @@
                                                 .btn-supp{
                                                     background-color: red;
                                                     color: white;
-                                                    width: 95px;
+                                                    width: 110px;
                                                     font-size: 14px;
+                                                    font-weight: bold;
                                                     text-align: center;
                                                     border: none;
                                                     padding: 5px;
@@ -231,19 +223,6 @@
                                                     align-items: center;
                                                 }
                                             </style>
-                                    </div>
-                                </div>
-
-                                <div class="container-card">
-                                    <div class="card-2">
-                                        <div class="card-header-1"><h3 class='title'>Document(s) associé(s)</h3></div>
-                                        <ul>
-                                        {% for document in Documents %}
-                                            {% if document.task.title == object.title %}
-                                            <a href="{% url 'document_update' document.id %}"><li>{{ document.title }}</li></a>
-                                            {% endif %}
-                                        {% endfor %}
-                                        </ul>
                                     </div>
                                 </div>
                         </div>

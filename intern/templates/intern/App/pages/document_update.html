@@ -95,7 +95,7 @@
                             <div class="row align-items-end">
                                 <div class="col-lg-8">
                                     <div class="page-header-title">
-                                        <i class="ik ik-layers bg-blue"></i>
+                                        <i class="ik ik-file-text bg-blue"></i>
                                         <div class="d-inline">
                                             <h5>Modification de document</h5>
                                             <span>{{ object.title }}</span>
@@ -122,9 +122,9 @@
                                             {% if error %}
                                                 <p class = 'error'>{{ error }}</p>
                                             {% endif %} {% endcomment %}
-                                            <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
+                                            <button type="submit" class="btn btn-primary mr-2"><i class="ik ik-clipboard"></i>Enregistrer</button>
                                         </form>
-                                        <a href="{% url 'delete_document' object.id %}"><button class='btn-supp'>Supprimer</button></a> 
+                                        <a href="{% url 'delete_document' object.id %}"><button class='btn-supp'><i class="ik ik-trash"></i> Supprimer</button></a> 
                                             <style>
                                                 .title{
                                                     text-align: center;
@@ -134,8 +134,9 @@
                                                 .btn-supp{
                                                     background-color: red;
                                                     color: white;
-                                                    width: 95px;
+                                                    width: 110px;
                                                     font-size: 14px;
+                                                    font-weight: bold;
                                                     text-align: center;
                                                     border: none;
                                                     padding: 5px;
@@ -202,7 +203,7 @@
                                 </div>
                         </div>
 
-                        <a href="{% url 'documents' %}"><button class="btn btn-primary mr-2">Liste des documents</button></a>
+                        <a href="{% url 'documents' %}"><button class="btn btn-primary mr-2"><i class="ik ik-file-text"></i>Liste des documents</button></a>
 
                     </div>
                 </div>

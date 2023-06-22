@@ -136,13 +136,13 @@
                                                     {% for task in Tasks%}
                                                     {% if task.project.internship.intern.user.username == user.username and task.project.status == 'En cours' %}
                                                     <tr>
-                                                        <td>{{ task.title }}</td>
+                                                        <td><a href="{% url 'task_info' task.id %}">{{ task.title }}</a></td>
                                                         <td>{{ task.description }}</td>
                                                         <td>{{ task.status }}</td>
                                                         <td>{{ task.start_date }}</td>
                                                         <td>{{ task.end_date }}</td>
-                                                        <td><a href="{% url 'task_detailled' task.id %}"><button class='btn-supp'><i class="ik ik-edit-2"></i>Modifier</button></a></td>
-                                                        <td><a href="{% url 'delete_task' task.id %}"><button class='btn btn-danger btn-rounded'><i class="ik ik-info"></i>Supprimer</button></a></td>
+                                                        <td><a href="{% url 'task_detailled' task.id %}"><button class='btn-supp'><i class="ik ik-edit"></i> Modifier</button></a></td>
+                                                        <td><a href="{% url 'delete_task' task.id %}"><button class='btn btn-danger btn-rounded'><i class="ik ik-trash"></i>Supprimer</button></a></td>
                                                     </tr>
                                                     {% endif %}
                                                     {% endfor %}
@@ -211,13 +211,13 @@
                         </div>
                         {% endif %}
 
-                        <a href="{% url 'add_task' %}"><button class="btn btn-primary mr-2">Ajouter une tâche</button></a>
+                        <a href="{% url 'add_task' %}"><button class="btn btn-primary mr-2"><i class="ik ik-layers"></i>Ajouter une tâche</button></a>
                         {% for project in Projects %}
                         {% if  project.internship.intern.user.username == user.username and project.status == 'En cours'%}
-                        <a href="{% url 'project_detailled' project.id %}"><button class="btn btn-primary mr-2">Aller au projet</button></a>       
+                        <a href="{% url 'project_detailled' project.id %}"><button class="btn btn-primary mr-2"><i class="ik ik-server"></i>Aller au projet</button></a>       
                         {% endif %}
                         {% endfor %}
-                        <a href="{% url 'export_to_excel_current_project' %}"><button class="btn btn-primary mr-2">Télécharger</button></a>
+                        <a href="{% url 'export_to_excel_current_project' %}"><button class="btn btn-primary mr-2"><i class="ik ik-download"></i>Télécharger</button></a>
                         
 
                     </div>

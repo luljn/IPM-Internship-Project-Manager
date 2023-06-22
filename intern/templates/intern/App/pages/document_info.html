@@ -89,6 +89,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="main-content">
                     <div class="container-fluid">
                         <div class="page-header">
@@ -97,121 +98,123 @@
                                     <div class="page-header-title">
                                         <i class="ik ik-file-text bg-blue"></i>
                                         <div class="d-inline">
-                                            {% if user.is_authenticated %}
-                                            <h5>Documents</h5>
-                                            <span>Voici la liste des documents</span>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        {% if user.is_authenticated %}
-                        
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header d-block">
-                                        <h3>Documents publics</h3>
-                                    </div>
-                                    <div class="card-body p-0 table-border-style">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Titre</th>
-                                                        <th>Description</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for document in Documents%}
-                                                    {% if document.project is None or document.is_public == True %}
-                                                    <tr>
-                                                        {% if document.project is not None and document.project.internship.intern.user.username == user.username %}
-                                                        <td><a href="{% url 'document_update' document.id %}">{{ document.title }}</a></td>
-                                                        {% else %}
-                                                        <td><a href="{% url 'document_info' document.id %}">{{ document.title }}</a></td>
-                                                        {% endif %}
-                                                        <td>{{ document.description }}</td>
-                                                        <td><a href="{% url 'download_document' document.id %}"><button class='btn-supp'><i class="ik ik-download"></i> Télécharger</button></a></td>
-                                                    </tr>
-                                                    {% endif %}
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card">
-                                    <div class="card-header d-block">
-                                        <h3>Mes documents privés</h3>
-                                    </div>
-                                    <div class="card-body p-0 table-border-style">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Titre</th>
-                                                        <th>Description</th>
-                                                        <th>Projet associé</th>
-                                                        <th>Tâche associée</th>
-                                                        <th></th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for document in Documents%}
-                                                    {% if document.project.internship.intern.user.username == user.username and document.is_public == False %}
-                                                    <tr>
-                                                        {% comment %} <td>{{ document.id }}</td> {% endcomment %}
-                                                        <td><a href="{% url 'document_update' document.id %}">{{ document.title }}</a></td>
-                                                        <td>{{ document.description }}</td>
-                                                        <td>{{ document.project.title }}</td>
-                                                        <td>{{ document.task.title }}</td>
-                                                        {% comment %} <td>{{ document.end_date }}</td> {% endcomment %}
-                                                        <td><a href="{% url 'download_document' document.id %}"><button class='btn-supp'><i class="ik ik-download"></i> Télécharger</button></a></td>
-                                                        <td><a href="{% url 'delete_document' document.id %}"><button class='btn btn-danger btn-rounded'><i class="ik ik-trash"></i>Supprimer</button></a></td>
-                                                    </tr>
-                                                    {% endif %}
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-                                            <style>
-                                                .btn-supp{
-                                                    background-color: #4CAF50;
-                                                    color: white;
-                                                    font-size: 13px;
-                                                    font-weight: bold;
-                                                    border: none;
-                                                    padding: 5px;
-                                                    border-radius: 3px;
-                                                    width: 105px;
-                                                }
-                                                .btn-supp:active{
-                                                    opacity: 0.5;
-                                                }
-    
-                                                .title{
-                                                    font-size: 25px;
-                                                    font-weight: bold;
-                                                    text-align: center; 
-                                                }
-                                            </style>
+                                            <h5>Document</h5>
+                                            <span>{{ object.title }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {% endif %}
+                        <div class="container-card">
+                                <div class="card-1">
+                                    <div class="card-header-1"><h3 class='title'>Détails du document</h3></div>
 
-                        <a href="{% url 'add_document' %}"><button class="btn btn-primary mr-2"><i class="ik ik-share"></i>Ajouter un document au projet</button></a>
-                        <a href="{% url 'add_document_to_task' %}"><button class="btn btn-primary mr-2"><i class="ik ik-share"></i>Ajouter un document à une tâche</button></a>
+                                        <h2>Titre : </h2>
+                                        <p>{{ object.title }}</p>
+
+                                        <h2>Description : </h2>
+                                        <p>{{ object.description }}</p>
+
+                                        <h2>Fichier : </h2>
+                                        <p><a href="{{ object.fichier.url }}">{{ object.fichier.url }}</a></p>
+
+                                        {% comment %} <h2>Date de début : </h2>
+                                        <p>{{ object.start_date }}</p>
+
+                                        <h2>Date de fin : </h2>
+                                        <p>{{ object.end_date }}</p>
+
+                                        <h2>Durée : </h2>
+                                        <p>{{ object.duration }} semaines</p>
+
+                                        <h2>Etat : </h2>
+                                        <p>{{ object.status }}</p> {% endcomment %}
+                                        <style>
+                                            .title{
+                                                text-align: center;
+                                                font-size : 35px;
+                                                font-weight: bold;
+                                            }
+
+                                            .btn-supp{
+                                                background-color: #4CAF50;
+                                                color: white;
+                                                width: 145px;
+                                                font-size: 13px;
+                                                font-weight: bold;
+                                                text-align: center;
+                                                border: none;
+                                                padding: 5px;
+                                                border-radius: 3px;
+                                                margin-top: 10px;
+                                            }
+                                            
+                                            .btn-supp:active{
+                                                opacity: 0.5;
+                                            }
+                                
+                                            label {
+                                                display: inline;
+                                                width: 100px;
+                                                margin-top: 5px;
+                                                font-size: 15px;
+                                                font-weight: bold;
+                                            }
+                                              
+                                            input[type="text"],
+                                            textarea 
+                                            {
+                                                padding: 5px;
+                                                border: 1px solid #ccc;
+                                                border-radius: 3px;
+                                                width: 300px;
+                                                margin-top: 5px;
+                                                font-size: 14px;
+                                            }
+
+                                            .card-1{
+                                                margin-bottom: 30px;
+                                                border: 1px solid #000;
+                                                box-shadow: 0 0 10px 5px #888;
+                                                width: 600px;
+                                            }
+
+                                            .card-1 h2{
+                                                font-weight: bold;
+                                                margin-left: 10px;
+                                            }
+
+                                            .card-1 p{
+                                                font-size: 20px;
+                                                margin-left: 20px;
+                                            }
+
+                                            .card-1 li{
+                                                font-size: 20px;
+                                                margin-left: 20px;
+                                            }
+
+                                            .buttons{
+                                                margin-bottom: 30px;
+                                            }
+
+                                            .container-card{
+                                                display: flex;
+                                                flex-direction: column;
+                                                justify-content: center;
+                                                align-items: center;
+                                            }
+                                        </style>
+                                    </div>
+                                </div>
 
                     </div>
+                    
+                    <a href="{% url 'documents' %}"><button class="btn btn-primary mr-2"><i class="ik ik-file-text"></i>Liste des documents</button></a>
+                    
+                   
+
                 </div>
                 
                 <footer class="footer">
@@ -220,6 +223,7 @@
                     </div>
                 </footer>
             </div>
+            
         </div>
 
 

@@ -178,7 +178,7 @@
                                                 </div>
                                             </div>
                                             {% if user.is_authenticated %}
-                                            <a href="{% url 'change_password' %}"><button class="btn btn-primary mr-2"><i class="ik ik-edit-2"></i>Modifier le mot de passe</button></a>
+                                            <a href="{% url 'change_password' %}"><button class="btn btn-primary mr-2"><i class="ik ik-edit"></i>Modifier le mot de passe</button></a>
                                             <a href="{% url 'change_photo' user.intern.id %}"><button class="btn btn-primary mr-2"><i class="ik ik-user dropdown-icon"></i>Modifier la photo de profil</button></a>
                                             {% endif %}
                                         </div>

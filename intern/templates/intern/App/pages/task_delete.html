@@ -112,9 +112,9 @@
                                         <form class="forms-sample" method='post'>
                                             {% csrf_token %}
                                             <p class="confirm">Êtes-vous sûr de vouloir supprimer la tâche "{{ object.title }}" ? Cette action est irréversible.</p>
-                                            <button class="btn btn-danger btn-rounded"><i class="ik ik-info"></i>Supprimer</button>
+                                            <button class="btn btn-danger btn-rounded"><i class="ik ik-trash"></i>Supprimer</button>
                                         </form>
-                                        <a href="{% url 'task_detailled' object.id %}"><button class="btn-r"><i class="ik ik-edit-2"></i>Modifier la tâche</button></a>
+                                        <a href="{% url 'task_detailled' object.id %}"><button class="btn-r"><i class="ik ik-edit"></i> Modifier la tâche</button></a>
                                             <style>
                                                 .title{
                                                     text-align: center;
@@ -126,6 +126,7 @@
                                                     color: white;
                                                     width: 95px;
                                                     font-size: 14px;
+                                                    font-weight: bold;
                                                     text-align: center;
                                                     border: none;
                                                     padding: 5px;
@@ -163,6 +164,7 @@
                                                     color: white;
                                                     width: 150px;
                                                     font-size: 14px;
+                                                    font-weight: bold;
                                                     text-align: center;
                                                     border: none;
                                                     padding: 5px;

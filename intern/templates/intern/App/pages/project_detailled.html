@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>IPM - Task</title>
+        <title>IPM - My Project</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -144,8 +144,9 @@
                                             .btn-supp{
                                                 background-color: #4CAF50;
                                                 color: white;
-                                                width: 125px;
+                                                width: 145px;
                                                 font-size: 13px;
+                                                font-weight: bold;
                                                 text-align: center;
                                                 border: none;
                                                 padding: 5px;
@@ -227,19 +228,19 @@
 
                                 {% if object.status == 'En cours' %}
                                 <div class="buttons">
-                                    <a href="{% url 'tasklist' %}"><button class="btn-supp">Liste des tâches</button></a>
-                                    <a href="{% url 'add_task' %}"><button class="btn-supp">Ajouter une tâche</button></a>
+                                    <a href="{% url 'tasklist' %}"><button class="btn-supp"><i class="ik ik-layers"></i> Liste des tâches</button></a>
+                                    <a href="{% url 'add_task' %}"><button class="btn-supp"><i class="ik ik-layers"></i> Ajouter une tâche</button></a>
                                     <a href="{% url 'add_document' %}"><button class="btn btn-primary mr-2"><i class="ik ik-share"></i>Ajouter un document</button></a>
                                     {% else %}
-                                    <a href="{% url 'tasklistEnded' object.id %}"><button class="btn-supp">Liste des tâches</button></a>
-                                    <a href="{% url 'project' %}"><button class="btn btn-primary mr-2">Liste des projets</button></a>
+                                    <a href="{% url 'tasklistEnded' object.id %}"><button class="btn-supp"><i class="ik ik-layers"></i> Liste des tâches</button></a>
+                                    <a href="{% url 'project' %}"><button class="btn btn-primary mr-2"><i class="ik ik-menu"></i>Liste des projets</button></a>
                                     
                                 </div>
                                 {% endif %}
                             {% comment %} </div> {% endcomment %}
 
                     </div>
-                    <a href="{% url 'project' %}"><button class="btn btn-primary mr-2">Liste des projets</button></a>
+                    <a href="{% url 'project' %}"><button class="btn btn-primary mr-2"><i class="ik ik-menu"></i>Liste des projets</button></a>
                    
 
                 </div>

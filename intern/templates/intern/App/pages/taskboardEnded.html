@@ -128,7 +128,7 @@
                                     {% comment %} {% if task.project.internship.intern.user.username == user.username and task.project.status != 'En cours' %} {% endcomment %}
                                     <tr>
                                         {% comment %} <td>{{ task.id }}</td> {% endcomment %}
-                                        <td>{{ task.title }}</td>
+                                        <td><a href="{% url 'task_info' task.id %}">{{ task.title }}</a></td>
                                         <td>{{ task.description }}</td>
                                         <td>{{ task.status }}</td>
                                         <td>{{ task.start_date }}</td>
@@ -154,8 +154,8 @@
                         </div>
                         {% endif %}
                                 
-                        <a href="{% url 'project_detailled' project.id %}"><button class="btn btn-primary mr-2">Retour au projet</button></a>
-                        <a href="{% url 'export_to_excel' project.internship.id %}"><button class="btn btn-primary mr-2">Télécharger</button></a>
+                        <a href="{% url 'project_detailled' project.id %}"><button class="btn btn-primary mr-2"><i class="ik ik-server"></i>Retour au projet</button></a>
+                        <a href="{% url 'export_to_excel' project.internship.id %}"><button class="btn btn-primary mr-2"><i class="ik ik-download"></i>Télécharger</button></a>
                 
                     </div>
                 </div>
