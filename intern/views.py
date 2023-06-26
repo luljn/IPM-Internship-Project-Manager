@@ -482,7 +482,7 @@ class DeleteDocument(LoginRequiredMixin, DeleteView) :
     
     
     
-class SearchView(View) :
+class SearchView(LoginRequiredMixin, View) :
     
     def get(self, request) :
         

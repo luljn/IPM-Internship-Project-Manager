@@ -273,9 +273,9 @@
                                                                 <td>{{ task.status }}</td>
                                                                 <td>{{ task.start_date }}</td>
                                                                 <td>{{ task.end_date }}</td>
-                                                                {% if task.project.status == 'En cours' %}
+                                                                {% comment %} {% if task.project.status == 'En cours' %} {% endcomment %}
                                                                 <td><a href="{% url 'task_info' task.id %}"><button class='btn btn-primary mr-2'><i class="ik ik-eye"></i>Consulter</button></a></td>
-                                                                {% endif %}
+                                                                {% comment %} {% endif %} {% endcomment %}
                                                                 <style>
                                                                     .btn-supp{
                                                                         background-color: #4CAF50;
